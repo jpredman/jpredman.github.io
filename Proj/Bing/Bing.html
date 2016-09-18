@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+   <head>
+   <title>Washington, D.C. Smithsonian Museums</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.3"></script>
+            <script type="text/javascript">
+               var map = null;         
+               
+               function GetMap()
+               {
+                  map = new VEMap('myMap');
+                  map.LoadMap(new VELatLong(38.897583, -77.002626));
+                 AddMuseum();     
+               }         
+             
+	var muse0=['National Museum of African American History and Culture','38.892086','-77.031964','http://www.si.edu/content/img/Museums/african-american/african-american.jpg',"http://www.si.edu/Museums/african-american-history-and-culture-museum"];
+	var muse1=['National Museum of African Art','38.887933','-77.025507','http://www.si.edu/content/img/Museums/african-art/african-art.jpg','http://www.si.edu/Museums/african-art-museum'];
+	var muse2=['National Air and Space Museum','38.88816','-77.019868','http://www.si.edu/content/img/Museums/air-space/air-space.jpg','http://www.si.edu/Museums/air-and-space-museum'];
+	var muse3=['Smithsonian American Art Museum','38.898275','-77.023049','http://www.si.edu/content/img/Museums/american-art/american-art.jpg','http://www.si.edu/Museums/american-art-museum'];
+	var muse4=['National Museum of American History','38.891283','-77.030028','http://www.si.edu/content/img/Museums/american-history/american-history.jpg','http://www.si.edu/Museums/american-history-museum'];
+	var muse5=['National Museum of the American Indian','38.888201','-77.016528','http://www.si.edu/content/img/Museums/american-indian/american-indian.jpg','http://www.si.edu/Museums/american-indian-museum'];
+	var muse6=['Anacostia Community Museum','38.856534','-76.97683','http://www.si.edu/content/img/Museums/anacostia/anacostia.jpg','http://www.si.edu/Museums/anacostia-community-museum'];
+	var muse7=['Arts and Industries Building','38.888632','-77.024373','http://www.si.edu/content/img/Museums/arts-industries/arts-industries.jpg','http://www.si.edu/Museums/arts-and-industries-building'];
+	var muse8=['Freer Gallery of Art','38.888119','-77.027328','http://www.si.edu/Content/img/Museums/freer-gallery/freer-gallery.jpg','http://www.si.edu/Museums/freer-gallery'];
+	var muse9=['Hirshhorn Museum and Sculpture Garden','38.888045','-77.022798','http://www.si.edu/content/img/Museums/hirshhorn/hirshhorn.jpg','http://www.si.edu/Museums/hirshhorn-museum-and-sculpture-garden'];
+	var muse10=['National Zoological Park','38.929616','-77.049784','http://www.si.edu/content/img/Museums/national-zoo/national-zoo.jpg','http://www.si.edu/Museums/national-zoo'];
+	var muse11=['National Museum of Natural History','38.891266','-77.026065','http://www.si.edu/content/img/Museums/natural-history/natural-history.jpg','http://www.si.edu/Museums/natural-history-museum'];
+	var muse12=['National Portrait Gallery','38.897869','-77.023053','http://www.si.edu/content/img/Museums/portrait-gallery/portrait-gallery.jpg','http://www.si.edu/Museums/portrait-gallery'];
+	var muse13=['National Postal Museum','38.89764','-77.008254','http://www.si.edu/content/img/Museums/postal-museum/postal-museum.jpg','http://www.si.edu/Museums/postal-museum'];
+	var muse14=['The Renwick Gallery of the Smithsonian American Art Museum','38.898738','-77.038889','http://www.si.edu/content/img/Museums/renwick-gallery/renwick-gallery.jpg','http://www.si.edu/Museums/renwick-gallery'];
+	var muse15=['Arthur M. Sackler Gallery','38.887713','-77.026481','http://www.si.edu/Content/img/Museums/sackler-gallery/sackler-gallery.jpg','http://www.si.edu/Museums/sackler-gallery'];
+	var muse16=['Smithsonian Institution Building (The Castle)','38.888786','-77.026023','http://www.si.edu/content/img/Museums/smithsonian-institution/smithsonian-institution.jpg','http://www.si.edu/Museums/smithsonian-institution-building'];
+               function AddMuseum()
+               {
+            	 var muse=new Array(17);
+             	 var musepoints=new Array(17);
+             	 var i;
+             	 var j;
+             	 for (i=0;i<muse.length;i++){
+             		 muse[i]=eval("muse"+i);
+             	 }
+             	var infoText=""; 
+             	 for(j=0;j<muse.length;j++){
+             		 
+            		 var myPoint=new VELatLong(muse[j][1],muse[j][2]);
+            		 var myShape=new VEShape(VEShapeType.Pushpin, myPoint);
+            		 musepoints[j]=myPoint;
+            		 myShape.SetTitle(muse[j][0]);
+            		 myShape.SetDescription("<a target='_blank' href='"+muse[j][4]+"'> <img width='320' height='211' src='"+muse[j][3]+"'></br>");
+            		 myShape.SetCustomIcon("Smithsonian.jpg");
+            	     map.AddShape(myShape);
+            	     infoText+="<a target='_blank' href='"+muse[j][4]+"'><span onmouseout=\"map.HideInfoBox();\" onmouseover=\"map.ShowInfoBox(map.GetShapeByID('"+myShape.GetID()+"'));\">"+muse[j][0]+"</span></br>";
+                	 document.getElementById("Museums").innerHTML=infoText;
+            	 }
+            	 map.SetMapView(musepoints);
+                }
+               
+            function FindwithCallback() {
+            	 var myoptions=new VERouteOptions();
+            	 myoptions.RouteCallback=showRouteInfo;
+            	 map.GetDirections([new VELatLong(muse10[1],muse10[2]),new VELatLong(muse14[1],muse14[2]),new VELatLong(muse3[1],muse3[2]),new VELatLong(muse13[1],muse13[2]),new VELatLong(muse6[1],muse6[2])],myoptions);
+            	 }
+            function showRouteInfo(inRoute){
+           	   var infoText="";
+            	   if(inRoute!=null){
+            	   infoText="";
+            	   var thiscount=1;  
+            	   var thiscount=1;  
+            	   for(var i = 0; i < inRoute.RouteLegs.length; i++){
+            	   var thisLeg=inRoute.RouteLegs[i];
+            	                     for(var j = 0; j < thisLeg.Itinerary.Items.length; j ++){
+            	   var thisturn = thisLeg.Itinerary.Items[j];
+            	                 infoText+=thiscount + ": " + thisturn.Text + " (Distance: " + thisturn.Distance.toFixed(1) + " Miles).<BR>";
+            	           thiscount++;  
+            	   }
+            	   }
+            	   document.getElementById("SearchInfo").innerHTML=infoText;
+            	   }  
+            	 }
+            	 
+            </script>
+         </head>
+         <body onload="GetMap();">
+     <h2>Smithsonian Museums in Washington, D.C.</h2>
+     <p>Below is a map of the Washington, D.C. area and all of the Smithsonian Museums in the district.</p>
+     <p>On the left is the list of museums with a link to their respective pages. An info box of the museum will pop up when you 
+     mouse over the list. You may either click the name of the museum from the list or mouse over the point and click the picture;
+     both options will bring you to the web page for the museum.</p>
+     <p>On the right is a "Get Directions" button that will take you from the National Zoo to the Renwick Museum, then to the Museum
+     of American Art, then to the National Postal Museum, and finally to the Anacostia Community Museum.</p>
+      <table border="0"><tr><td><table border="3"><tr>
+      <td valign="top"> <B><font size=3>On this map are the locations of all of the Smithsonian Museums in Washington, D.C.
+      </font></B><br><br> <span id="Museums"></span> 
+      </td> 
+      <td><div id='myMap' style="position:relative; width:650px; height:650px;"></div>
+      </td>
+      <td valign="top"><button onclick="FindwithCallback();">Get Directions</button><br>
+      <B><font size=2>Route: Zoo -> The Renwick Gallery -> National Museum of American Art -> Postal Museum -> Anacostia Community Museum
+      </font></B><br><br> <font size=2> <span id="SearchInfo"></span>  
+      </td> 
+      </tr></table></td>
+
+
+      </tr>
+     </table>
+         </body>
+      </html>
