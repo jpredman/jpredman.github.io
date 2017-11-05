@@ -8,9 +8,11 @@
    integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
    crossorigin=""/>
 
+  <link rel="stylesheet" href="CSS/MarkerCluster.css" />
+  <link rel="stylesheet" href="CSS/MarkerCluster.Default.css" />
+  
 
-
-
+  
    <!-- create map in fullscreen -->
    <style>
         body {
@@ -33,18 +35,20 @@
 
 <body>
    <div id="mapid"></div>
-    <!-- Jquery -->
-  <script src="JS/jquery-3.2.1.js"></script> 
-  
 
-  
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <!-- Jquery -->
+  <script src="JS/jquery-3.2.1.js"></script>   
+   <!-- Make sure you put this AFTER Leaflet's CSS -->
 	<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
    integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
    crossorigin=""></script>
+  <!-- MarkerCluster -->
+  <script src="JS/leaflet.markercluster.js"></script>
   
   <!-- AJAX -->
   <script src="JS/leaflet.ajax.js"></script>   
+  <!-- spiderfy location -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
 
  <!-- Put a div element with a certain id where you want your map to be:-->
 <script>
@@ -57,13 +61,24 @@
 }).addTo(map);
 
 
-var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
-geojsonLayer.addTo(map);
-
-
+var markers = L.markerClusterGroup();
+ 
 //this is used when the geojson is saved as a .js file (js script call from above)
 //L.geoJson(HUB_Master).addTo(map);
 
+
+//DEFAULT
+//var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
+//geojsonLayer.addTo(map);
+
+
+var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
+
+geojsonLayer.on('data:loaded', function () {
+    markers.addLayer(geojsonLayer);
+    console.log(markers);
+    map.addLayer(markers);
+});
 
 </script>
 </body>
