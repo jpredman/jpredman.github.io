@@ -71,14 +71,22 @@ var markers = L.markerClusterGroup();
 //var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
 //geojsonLayer.addTo(map);
 
+//working
+//var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
 
-var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
+var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson",{
+    onEachFeature:function (feature, layer) {
+      layer.bindPopup(feature.properties.airline);      //+'</h1><p>name: '+feature.properties.f2+'</p>');
+    }
+  });  
 
+//https://stackoverflow.com/questions/29824478/leaflet-markercluster-with-geojson/29856139#29856139
 geojsonLayer.on('data:loaded', function () {
     markers.addLayer(geojsonLayer);
-    console.log(markers);
-    map.addLayer(markers);
+    //console.log(markers);
+    map.addLayer(markers)
 });
+
 
 </script>
 </body>
