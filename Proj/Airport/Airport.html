@@ -71,7 +71,11 @@ var PlaneIcon2 = L.icon({
     iconSize: [25,25]
  });
 
-var markers = L.markerClusterGroup();
+var markers = L.markerClusterGroup({
+    showCoverageOnHover: false,
+    maxClusterRadius: 40
+  }
+  );
 
 
 //this is used when the geojson is saved as a .js file (js script call from above)
