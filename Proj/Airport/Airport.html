@@ -61,12 +61,35 @@
 }).addTo(map);
 
 
+var PlaneIcon1 = L.icon({
+    iconUrl: 'icons/Plane1.png',
+    iconSize: [25,25]
+ });
+
+var PlaneIcon2 = L.icon({
+    iconUrl: 'icons/Plane2.png',
+    iconSize: [25,25]
+ });
+
 var markers = L.markerClusterGroup();
- 
+
+
 //this is used when the geojson is saved as a .js file (js script call from above)
+//decided to keep it as a geojson rather than having to alter the script to make is .js compatible 
 //L.geoJson(HUB_Master).addTo(map);
 
 
+function customPoint (feature, layer) {
+        layer.bindPopup(feature.properties.airline);
+        if (feature.properties.airline ==='Republic') {
+            layer.setIcon(PlaneIcon1);
+            };
+        
+        if (feature.properties.airline ==='FedEx') {
+            layer.setIcon(PlaneIcon2);
+            };
+        
+  };
 //DEFAULT
 //var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
 //geojsonLayer.addTo(map);
@@ -74,17 +97,17 @@ var markers = L.markerClusterGroup();
 //working
 //var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
 
+//Popup
 var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson",{
-    onEachFeature:function (feature, layer) {
-      layer.bindPopup(feature.properties.airline);      //+'</h1><p>name: '+feature.properties.f2+'</p>');
-    }
+    onEachFeature: customPoint
   });  
+
 
 //https://stackoverflow.com/questions/29824478/leaflet-markercluster-with-geojson/29856139#29856139
 geojsonLayer.on('data:loaded', function () {
     markers.addLayer(geojsonLayer);
     //console.log(markers);
-    map.addLayer(markers)
+    map.addLayer(markers);
 });
 
 

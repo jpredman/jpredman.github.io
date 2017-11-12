@@ -220,7 +220,6 @@
 { "type": "Feature", "properties": { "id": 215, "airline": "Skywest", "hub": "DTW", "airport_name": "Detroit Metropolitan Wayne County Airport", "airline_cat": "Regional" }, "geometry": { "type": "Point", "coordinates": [ -83.356146, 42.208172 ] } },
 { "type": "Feature", "properties": { "id": 216, "airline": "Skywest", "hub": "LAX", "airport_name": "Los Angeles International Airport", "airline_cat": "Regional" }, "geometry": { "type": "Point", "coordinates": [ -118.408294, 33.943609 ] } },
 { "type": "Feature", "properties": { "id": 217, "airline": "Skywest", "hub": "CVG", "airport_name": "Cincinnati\/Northern Kentucky International Airport", "airline_cat": "Regional" }, "geometry": { "type": "Point", "coordinates": [ -84.656161, 39.055716 ] } },
-{ "type": "Feature", "properties": { "id": 218, "airline": "Skywest", "hub": "MSP", "airport_name": "Minneapolis?Saint Paul International Airport", "airline_cat": "Regional" }, "geometry": { "type": "Point", "coordinates": [ -93.207935, 44.881931 ] } },
 { "type": "Feature", "properties": { "id": 219, "airline": "Skywest", "hub": "ATL", "airport_name": "Hartsfield-Jackson Atlanta International Airport", "airline_cat": "Regional" }, "geometry": { "type": "Point", "coordinates": [ -84.418918, 33.640328 ] } }
 ]
 }
