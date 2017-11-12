@@ -71,9 +71,35 @@ var PlaneIcon2 = L.icon({
     iconSize: [25,25]
  });
 
+var DeltaIcon = L.icon({
+    iconUrl: 'icons/Delta.jpg',
+    iconSize: [25,25]
+ });
+
+var AmericanIcon = L.icon({
+    iconUrl: 'icons/American.jpg',
+    iconSize: [25,25]
+ });
+
+var FedExIcon = L.icon({
+    iconUrl: 'icons/FedEx.jpg',
+    iconSize: [25,25]
+ });
+
+var UnitedIcon = L.icon({
+    iconUrl: 'icons/United.png',
+    iconSize: [25,25]
+ });
+
+var UPSIcon = L.icon({
+    iconUrl: 'icons/UPS.jpg',
+    iconSize: [25,25]
+ });
+
 var markers = L.markerClusterGroup({
     showCoverageOnHover: false,
-    maxClusterRadius: 40
+    maxClusterRadius: 50,
+    spiderfyDistanceMultiplier: 2
   }
   );
 
@@ -87,14 +113,25 @@ function customPoint (feature, layer) {
          "<strong style='color: #000066'><font size='4'><div align='center'>"+feature.properties.airline+'</strong></font></div><br>'+
           "Airline Category: "+feature.properties.airline_cat
         );
-        if (feature.properties.airline ==='Republic') {
-            layer.setIcon(PlaneIcon1);
+        if (feature.properties.airline ==='Delta') {
+            layer.setIcon(DeltaIcon);
             };
         
         if (feature.properties.airline ==='FedEx') {
-            layer.setIcon(PlaneIcon2);
+            layer.setIcon(FedExIcon);
             };
         
+        if (feature.properties.airline ==='American') {
+            layer.setIcon(AmericanIcon);
+            };
+
+        if (feature.properties.airline ==='United') {
+            layer.setIcon(UnitedIcon);
+            };
+
+        if (feature.properties.airline ==='UPS') {
+            layer.setIcon(UPSIcon);
+            };
   };
 //DEFAULT
 //var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
