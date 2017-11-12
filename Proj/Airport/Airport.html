@@ -78,9 +78,11 @@ var markers = L.markerClusterGroup();
 //decided to keep it as a geojson rather than having to alter the script to make is .js compatible 
 //L.geoJson(HUB_Master).addTo(map);
 
-
 function customPoint (feature, layer) {
-        layer.bindPopup(feature.properties.airline);
+        layer.bindPopup(
+         "<strong style='color: #000066'><font size='4'><div align='center'>"+feature.properties.airline+'</strong></font></div><br>'+
+          "Airline Category: "+feature.properties.airline_cat
+        );
         if (feature.properties.airline ==='Republic') {
             layer.setIcon(PlaneIcon1);
             };
@@ -94,10 +96,7 @@ function customPoint (feature, layer) {
 //var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
 //geojsonLayer.addTo(map);
 
-//working
-//var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");
 
-//Popup
 var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson",{
     onEachFeature: customPoint
   });  
