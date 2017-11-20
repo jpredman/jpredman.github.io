@@ -10,8 +10,8 @@
 
   <link rel="stylesheet" href="CSS/MarkerCluster.css" />
   <link rel="stylesheet" href="CSS/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="CSS/LabelCSS.css" />  
   
-
   
    <!-- create map in fullscreen -->
    <style>
@@ -71,29 +71,34 @@ var PlaneIcon2 = L.icon({
     iconSize: [25,25]
  });
 
-var DeltaIcon = L.icon({
-    iconUrl: 'icons/Delta.jpg',
-    iconSize: [25,25]
+var DeltaIcon = L.divIcon({
+    className: 'Major',
+    html: 'D'
  });
 
-var AmericanIcon = L.icon({
-    iconUrl: 'icons/American.jpg',
-    iconSize: [25,25]
+//var DeltaIcon = L.icon({
+//    iconUrl: 'icons/Delta.jpg',
+//    iconSize: [25,25]
+// });
+
+var AmericanIcon = L.divIcon({
+    className: 'Major',
+    html: 'A'
  });
 
-var FedExIcon = L.icon({
-    iconUrl: 'icons/FedEx.jpg',
-    iconSize: [25,25]
+var FedExIcon = L.divIcon({
+    className: 'Cargo',
+    html: 'FE'
  });
 
-var UnitedIcon = L.icon({
-    iconUrl: 'icons/United.png',
-    iconSize: [25,25]
+var UnitedIcon = L.divIcon({
+    className: 'Major',
+    html: 'U'
  });
 
-var UPSIcon = L.icon({
-    iconUrl: 'icons/UPS.jpg',
-    iconSize: [25,25]
+var UPSIcon = L.divIcon({
+    className: 'Cargo',
+    html: 'UPS'
  });
 
 var markers = L.markerClusterGroup({
@@ -109,10 +114,6 @@ var markers = L.markerClusterGroup({
 //L.geoJson(HUB_Master).addTo(map);
 
 function customPoint (feature, layer) {
-        layer.bindPopup(
-         "<strong style='color: #000066'><font size='4'><div align='center'>"+feature.properties.airline+'</strong></font></div><br>'+
-          "Airline Category: "+feature.properties.airline_cat
-        );
         if (feature.properties.airline ==='Delta') {
             layer.setIcon(DeltaIcon);
             };
@@ -132,6 +133,11 @@ function customPoint (feature, layer) {
         if (feature.properties.airline ==='UPS') {
             layer.setIcon(UPSIcon);
             };
+        layer.bindPopup(
+         "<strong style='color: #000066'><font size='4'><div align='center'>"+feature.properties.airline+'</strong></font></div><br>'+"<div align='center'><img src=icons/"+feature.properties.airline+".jpg  width=50%  height=50%</div><br>"+
+          "Airline Category: "+feature.properties.airline_cat
+        );
+        //width='100' height='50'
   };
 //DEFAULT
 //var geojsonLayer = new L.GeoJSON.AJAX("HUB_Master.geojson");

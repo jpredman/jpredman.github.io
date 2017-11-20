@@ -1,0 +1,39 @@
+/* colors: http://www.colors.commutercreative.com/grid/ */
+
+.Major {
+  white-space:nowrap;
+  text-align:center;
+  font-family: Calibri;
+  font-size: 220%;
+  text-shadow: 0 0 0.1em DarkGray, 0 0 0.1em DarkGray,
+        0 0 0.1em DarkGray,0 0 0.1em DarkGray,0 0 0.1em;
+  color: DarkCyan;
+}
+
+.Cargo {
+  white-space:nowrap;
+  font-family: Calibri;
+  font-size: 150%;
+  text-shadow: 0 0 0.1em DarkGray, 0 0 0.1em DarkGray,
+        0 0 0.1em DarkGray,0 0 0.1em DarkGray,0 0 0.1em;
+  color: DarkGoldenRod;
+}
+
+.MidMajor {
+  white-space:nowrap;
+  font-family: Calibri;
+  font-size: 150%;
+  text-shadow: 0 0 0.1em DarkGray, 0 0 0.1em DarkGray,
+        0 0 0.1em DarkGray,0 0 0.1em DarkGray,0 0 0.1em;
+  color: DarkOrchid;
+}
+
+.Regional {
+  white-space:nowrap;
+  font-family: Calibri;
+  font-size: 125%;
+  text-shadow: 0 0 0.1em DarkGray, 0 0 0.1em DarkGray,
+        0 0 0.1em DarkGray,0 0 0.1em DarkGray,0 0 0.1em;
+  color: OliveDrab;
+}
+
