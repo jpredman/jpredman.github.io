@@ -60,21 +60,22 @@
     accessToken: 'pk.eyJ1IjoianByZWRtYW4iLCJhIjoianduT2tzOCJ9.bPjlTBZwiU7I3tvf3w-KLg'
 }).addTo(map);
 
-
+//Test1
 var PlaneIcon1 = L.icon({
     iconUrl: 'icons/Plane1.png',
     iconSize: [25,25]
- });
+});
 
+//Test2
 var PlaneIcon2 = L.icon({
     iconUrl: 'icons/Plane2.png',
     iconSize: [25,25]
- });
+});
 
 var DeltaIcon = L.divIcon({
     className: 'Major',
     html: 'D'
- });
+});
 
 //var DeltaIcon = L.icon({
 //    iconUrl: 'icons/Delta.jpg',
@@ -84,22 +85,133 @@ var DeltaIcon = L.divIcon({
 var AmericanIcon = L.divIcon({
     className: 'Major',
     html: 'A'
- });
+});
 
 var FedExIcon = L.divIcon({
     className: 'Cargo',
     html: 'FE'
- });
+});
 
 var UnitedIcon = L.divIcon({
     className: 'Major',
     html: 'U'
- });
+});
 
 var UPSIcon = L.divIcon({
     className: 'Cargo',
     html: 'UPS'
- });
+});
+
+var AlaskaIcon = L.divIcon({ 
+    className: 'MidMajor', 
+    html: 'AK'
+});
+
+var HawaiianIcon = L.divIcon({ 
+    className: 'MidMajor', 
+    html: 'H' 
+});
+
+var AllegiantIcon = L.divIcon({ 
+    className: 'MidMajor', 
+    html: 'Al' 
+});
+
+var FrontierIcon = L.divIcon({ 
+    className: 'MidMajor', 
+    html: 'F' 
+}); 
+
+var JetBlueIcon = L.divIcon({ 
+    className: 'MidMajor', 
+    html: 'JB' 
+}); 
+
+var SouthwestIcon = L.divIcon({ 
+    className: 'MidMajor', 
+    html: 'SW' 
+}); 
+
+var SpiritIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'Sp' 
+}); 
+
+var SunCountryIcon = L.divIcon({ 
+    className: 'MidMajor', 
+    html: 'SC' 
+}); 
+
+var VirginIcon = L.divIcon({ 
+    className: 'MidMajor', 
+    html: 'V' 
+}); 
+
+var AirWiscoIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'AW' 
+}); 
+
+var CompassIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'C' 
+}); 
+
+var EndeavorIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'E' 
+}); 
+
+var EnvoyIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'Ev' 
+}); 
+
+var ExpressJetIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'EJ' 
+}); 
+
+var GoJetIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'GJ' 
+}); 
+
+var HorizonIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'H' 
+}); 
+
+var MesaIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'M' 
+}); 
+
+var PiedmontIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'Pd' 
+}); 
+
+var PSAIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'PSA' 
+}); 
+
+var RepublicIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'R' 
+}); 
+
+var SkywestIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'SkW' 
+}); 
+
+var TransStatesIcon = L.divIcon({ 
+    className: 'Regional', 
+    html: 'TS' 
+}); 
+
 
 var markers = L.markerClusterGroup({
     showCoverageOnHover: false,
@@ -133,6 +245,95 @@ function customPoint (feature, layer) {
         if (feature.properties.airline ==='UPS') {
             layer.setIcon(UPSIcon);
             };
+
+        if (feature.properties.airline ==='Alaska') {
+            layer.setIcon(AlaskaIcon);  
+            };
+
+        if (feature.properties.airline ==='Hawaiian') {
+            layer.setIcon(HawaiianIcon);  
+            };
+        
+        if (feature.properties.airline ==='Allegiant') {
+            layer.setIcon(AllegiantIcon);  
+            };
+
+        if (feature.properties.airline ==='Frontier') {
+            layer.setIcon(FrontierIcon);
+            };
+
+        if (feature.properties.airline ==='JetBlue') {
+            layer.setIcon(JetBlueIcon);
+            };
+
+        if (feature.properties.airline ==='Southwest') {
+            layer.setIcon(SouthwestIcon);
+            };
+
+        if (feature.properties.airline ==='Spirit') {
+            layer.setIcon(SpiritIcon);
+            };
+
+        if (feature.properties.airline ==='SunCountry') {
+            layer.setIcon(SunCountryIcon);
+            };
+
+        if (feature.properties.airline ==='Virgin') {
+            layer.setIcon(VirginIcon);
+            };
+
+        if (feature.properties.airline ==='AirWisco') {
+            layer.setIcon(AirWiscoIcon);
+            };
+
+        if (feature.properties.airline ==='Compass') {
+            layer.setIcon(CompassIcon);
+            };
+
+        if (feature.properties.airline ==='Endeavor') {
+            layer.setIcon(EndeavorIcon);
+            };
+
+        if (feature.properties.airline ==='Envoy') {
+            layer.setIcon(EnvoyIcon);
+            };
+        
+        if (feature.properties.airline ==='ExpressJet') {
+            layer.setIcon(ExpressJetIcon);
+            };
+        
+        if (feature.properties.airline ==='GoJet') {
+            layer.setIcon(GoJetIcon);
+            };
+        
+        if (feature.properties.airline ==='Horizon') {
+            layer.setIcon(HorizonIcon);
+            };
+        
+        if (feature.properties.airline ==='Mesa') {
+            layer.setIcon(MesaIcon);
+            };
+        
+        if (feature.properties.airline ==='Piedmont') {
+            layer.setIcon(PiedmontIcon);
+            };
+        
+        if (feature.properties.airline ==='PSA') {
+            layer.setIcon(PSAIcon);  
+            };
+        
+        if (feature.properties.airline ==='Republic') {
+            layer.setIcon(RepublicIcon);
+            };
+        
+        if (feature.properties.airline ==='Skywest') {
+            layer.setIcon(SkywestIcon);
+            };
+        
+        if (feature.properties.airline ==='TransStates') {
+            layer.setIcon(TransStatesIcon);
+            };
+
         layer.bindPopup(
          "<strong style='color: #000066'><font size='4'><div align='center'>"+feature.properties.airline+'</strong></font></div><br>'+"<div align='center'><img src=icons/"+feature.properties.airline+".jpg  width=50%  height=50%</div><br>"+
           "Airline Category: "+feature.properties.airline_cat
