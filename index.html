@@ -18,6 +18,8 @@
       --muted:   #7ea8c0;
       --white:   #ffffff;
       --red:     #e74c3c;
+      --wave1:   #18bc9c;
+      --wave2:   #e67e22;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,26 +35,21 @@
     header {
       background: linear-gradient(135deg, var(--navy) 0%, #0d2035 100%);
       border-bottom: 3px solid var(--teal);
-      padding: 20px 40px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
-    .ball-icon {
-      width: 42px; height: 42px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem;
-      flex-shrink: 0;
-    }
+    .ball-icon { font-size: 1.8rem; flex-shrink: 0; }
     header .logo {
       font-family: 'Bebas Neue', cursive;
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: var(--teal);
       letter-spacing: 2px;
       line-height: 1;
     }
     header .tagline {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--muted);
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -60,37 +57,73 @@
 
     /* ── MAIN ────────────────────────────────────── */
     main {
-      max-width: 960px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 30px 20px 60px;
+      padding: 20px 14px 60px;
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 20px;
     }
 
-    /* ── FIELD ───────────────────────────────────── */
-    .field-wrap {
+    /* ── CARDS ───────────────────────────────────── */
+    .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 24px;
+      padding: 20px;
     }
-    .field-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 18px;
-    }
-    .field-title {
+    .card-title {
       font-family: 'Bebas Neue', cursive;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       color: var(--teal);
       letter-spacing: 2px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
+    /* ── WAVE TOGGLE ─────────────────────────────── */
+    .wave-toggle {
+      display: flex;
+      gap: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .wave-btn {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      padding: 6px 18px;
+      border: none;
+      cursor: pointer;
+      background: var(--navy);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .wave-btn.active-w1 { background: var(--wave1); color: var(--dark); }
+    .wave-btn.active-w2 { background: var(--wave2); color: var(--white); }
+
+    /* ── FIELD SVG ───────────────────────────────── */
+    .field-controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
     .field-svg-wrap {
       position: relative;
       width: 100%;
       aspect-ratio: 1 / 1;
-      max-width: 620px;
+      max-width: 600px;
       margin: 0 auto;
     }
     .field-svg-wrap svg { width: 100%; height: 100%; }
@@ -105,109 +138,47 @@
     }
     .pos-label {
       font-family: 'Bebas Neue', cursive;
-      font-size: 0.75rem;
-      letter-spacing: 1.5px;
+      font-size: clamp(0.55rem, 1.5vw, 0.75rem);
+      letter-spacing: 1px;
       color: var(--white);
-      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-      margin-bottom: 3px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+      margin-bottom: 2px;
       white-space: nowrap;
     }
     .pos-select {
-      background: rgba(10,25,40,0.88);
+      background: rgba(10,25,40,0.9);
       border: 1.5px solid var(--teal);
       border-radius: 20px;
       color: var(--white);
       font-family: 'Barlow', sans-serif;
-      font-size: 0.78rem;
+      font-size: clamp(0.65rem, 1.8vw, 0.78rem);
       font-weight: 600;
-      padding: 4px 10px;
+      padding: 3px 8px;
       cursor: pointer;
-      min-width: 100px;
+      min-width: clamp(70px, 18vw, 100px);
+      max-width: clamp(80px, 20vw, 110px);
       text-align: center;
-      transition: border-color 0.2s, background 0.2s;
       appearance: none;
       -webkit-appearance: none;
-    }
-    .pos-select:focus { outline: none; border-color: var(--teal-lt); background: rgba(10,25,40,0.97); }
-    .pos-select.filled { background: rgba(24,188,156,0.18); border-color: var(--teal-lt); }
-    .pos-select option { background: #0f1c28; }
-    .pos-overlay.pitcher .pos-select { border-color: var(--red); }
-    .pos-overlay.pitcher .pos-select.filled { background: rgba(231,76,60,0.18); border-color: #ff6b5b; }
-
-    .legend {
-      display: flex; gap: 18px; flex-wrap: wrap;
-      margin-top: 14px; font-size: 0.78rem; color: var(--muted);
-    }
-    .legend-item { display: flex; align-items: center; gap: 6px; }
-    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-
-    /* ── ROSTER PANEL ────────────────────────────── */
-    .panel {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-    }
-    .panel-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.3rem;
-      color: var(--teal);
-      letter-spacing: 2px;
-      margin-bottom: 18px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .roster-input-row {
-      display: flex; gap: 8px; margin-bottom: 18px;
-    }
-    .roster-input-row input {
-      flex: 1;
-      background: var(--navy);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--white);
-      padding: 8px 12px;
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.9rem;
-    }
-    .roster-input-row input:focus { outline: none; border-color: var(--teal); }
-
-    /* ── ROSTER TABLE ────────────────────────────── */
-    .roster-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 18px;
-      font-size: 0.88rem;
-    }
-    .roster-table thead th {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 0.8rem;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      text-align: left;
-      padding: 6px 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .roster-table tbody tr:hover { background: rgba(24,188,156,0.05); }
-    .roster-table td {
-      padding: 6px 10px;
-      border-bottom: 1px solid rgba(45,74,99,0.4);
-      vertical-align: middle;
-    }
-    .roster-table td.name-cell { font-weight: 600; color: var(--white); }
-
-    .pref-badge {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 0.78rem;
-      font-weight: 600;
+      transition: border-color 0.2s, background 0.2s;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .pref-badge.p1 { background: rgba(24,188,156,0.15); border: 1px solid var(--teal-dk); color: var(--teal-lt); }
-    .pref-badge.p2 { background: rgba(24,188,156,0.06); border: 1px solid var(--border); color: var(--muted); }
-    .pref-badge.none { color: var(--border); font-style: italic; }
+    .pos-select:focus { outline: none; border-color: var(--teal-lt); }
+    .pos-select.filled { background: rgba(24,188,156,0.2); border-color: var(--teal-lt); }
+    .pos-select.filled-w2 { background: rgba(230,126,34,0.2); border-color: #e67e22; }
+    .pos-select option { background: #0f1c28; }
+    .pos-overlay.pitcher .pos-select { border-color: var(--red); }
+    .pos-overlay.pitcher .pos-select.filled { background: rgba(231,76,60,0.2); border-color: #ff6b5b; }
+    .pos-overlay.pitcher .pos-select.filled-w2 { background: rgba(231,76,60,0.2); border-color: #ff6b5b; }
+
+    .legend {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      margin-top: 12px; font-size: 0.76rem; color: var(--muted);
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
     /* ── BUTTONS ─────────────────────────────────── */
     .btn {
@@ -224,48 +195,170 @@
       white-space: nowrap;
     }
     .btn:hover { background: var(--teal-lt); }
-    .btn-sm { padding: 4px 10px; font-size: 0.78rem; border-radius: 4px; }
+    .btn-sm { padding: 4px 10px; font-size: 0.76rem; border-radius: 4px; }
     .btn-ghost {
       background: transparent;
       color: var(--muted);
       border: 1px solid var(--border);
     }
     .btn-ghost:hover { color: var(--red); border-color: var(--red); background: rgba(231,76,60,0.08); }
+    .btn-orange { background: var(--wave2); color: var(--white); }
+    .btn-orange:hover { background: #d35400; }
 
-    /* ── BENCH + ACTIONS ─────────────────────────── */
-    .bench-section { margin-top: 18px; }
-    .bench-label {
+    /* ── ROSTER TABLE ────────────────────────────── */
+    .roster-input-row {
+      display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+    }
+    .roster-input-row input {
+      flex: 1;
+      min-width: 120px;
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--white);
+      padding: 8px 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.88rem;
+    }
+    .roster-input-row input:focus { outline: none; border-color: var(--teal); }
+
+    .roster-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      margin-bottom: 16px;
+    }
+    .roster-table thead th {
+      font-family: 'Bebas Neue', cursive;
       font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      text-align: left;
+      padding: 5px 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .roster-table tbody tr { transition: background 0.15s; }
+    .roster-table tbody tr:hover { background: rgba(24,188,156,0.05); }
+    .roster-table tbody tr.absent { opacity: 0.45; }
+    .roster-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid rgba(45,74,99,0.35);
+      vertical-align: middle;
+    }
+    .name-cell { font-weight: 600; color: var(--white); }
+    .assigned-tag {
+      font-size: 0.68rem;
+      color: var(--teal);
+      margin-left: 5px;
+      font-weight: 400;
+    }
+    .assigned-tag.w2 { color: var(--wave2); }
+
+    .pref-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .pref-badge.p1 { background: rgba(24,188,156,0.13); border: 1px solid var(--teal-dk); color: var(--teal-lt); }
+    .pref-badge.p2 { background: rgba(24,188,156,0.05); border: 1px solid var(--border); color: var(--muted); }
+
+    /* attendance checkbox */
+    .attend-cb {
+      width: 17px; height: 17px;
+      accent-color: var(--teal);
+      cursor: pointer;
+    }
+
+    /* ── BENCH ───────────────────────────────────── */
+    .bench-section { margin-top: 14px; }
+    .bench-label {
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--muted);
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
-    .bench-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .bench-chips { display: flex; flex-wrap: wrap; gap: 5px; }
     .bench-chip {
       background: var(--navy);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 0.82rem;
-      color: var(--muted);
+      border: 1px solid var(--teal-dk);
+      border-radius: 16px;
+      padding: 3px 10px;
+      font-size: 0.8rem;
+      color: var(--text);
     }
-    .bench-chip.unassigned { color: var(--text); border-color: var(--teal-dk); }
 
-    .action-row { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+    .action-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
 
     .copy-output {
-      margin-top: 18px;
+      margin-top: 16px;
       background: var(--navy);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px;
-      font-size: 0.82rem;
+      padding: 12px;
+      font-size: 0.8rem;
       color: var(--text);
       white-space: pre;
-      font-family: 'Barlow', monospace;
+      font-family: monospace;
       line-height: 1.6;
       display: none;
+      overflow-x: auto;
+    }
+
+    /* ── KICKING ORDER ───────────────────────────── */
+    .kick-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 40px;
+    }
+    .kick-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: grab;
+      user-select: none;
+      transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+      touch-action: none;
+    }
+    .kick-item:active { cursor: grabbing; }
+    .kick-item.dragging { opacity: 0.4; border-color: var(--teal); }
+    .kick-item.drag-over { background: rgba(24,188,156,0.1); border-color: var(--teal); }
+    .kick-num {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1rem;
+      color: var(--teal);
+      min-width: 22px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .kick-name { flex: 1; font-weight: 600; font-size: 0.9rem; }
+    .kick-handle { color: var(--border); font-size: 1rem; flex-shrink: 0; }
+    .kick-empty {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-style: italic;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────── */
+    /* Hide pref columns on small screens */
+    @media (max-width: 600px) {
+      .col-pref { display: none; }
+      .roster-table thead th.col-pref { display: none; }
+      .field-svg-wrap { max-width: 100%; }
+      header { padding: 10px 14px; }
+      header .logo { font-size: 1.4rem; }
+      .card { padding: 14px 12px; }
     }
   </style>
 </head>
@@ -281,11 +374,19 @@
 
 <main>
 
-  <!-- FIELD -->
-  <div class="field-wrap">
-    <div class="field-header">
-      <div class="field-title">🏟 Field Lineup</div>
-      <button class="btn btn-sm" onclick="autoFill()">Auto-Fill</button>
+  <!-- ── FIELD LINEUP ────────────────────────────── -->
+  <div class="card">
+    <div class="card-title">
+      <span>🏟 Field Lineup</span>
+      <div class="wave-toggle">
+        <button class="wave-btn active-w1" id="btnW1" onclick="setWave(1)">Wave 1</button>
+        <button class="wave-btn" id="btnW2" onclick="setWave(2)">Wave 2</button>
+      </div>
+    </div>
+
+    <div class="field-controls">
+      <button class="btn btn-sm btn-ghost" onclick="autoFill()">Auto-Fill</button>
+      <button class="btn btn-sm btn-ghost" onclick="clearLineup()">Clear</button>
     </div>
 
     <div class="field-svg-wrap" id="fieldWrap">
@@ -305,6 +406,7 @@
         <circle cx="250" cy="275" r="18" fill="#b89a5a" stroke="#e8c870" stroke-width="1.5"/>
       </svg>
 
+      <!-- Infield -->
       <div class="pos-overlay pitcher" style="left:50%;top:55.5%">
         <div class="pos-label">Pitcher</div>
         <select class="pos-select" id="pos-P" onchange="onAssign('P',this)"><option value="">— select —</option></select>
@@ -313,118 +415,123 @@
         <div class="pos-label">Catcher</div>
         <select class="pos-select" id="pos-C" onchange="onAssign('C',this)"><option value="">— select —</option></select>
       </div>
-      <div class="pos-overlay" style="left:81%;top:55%">
+      <div class="pos-overlay" style="left:80%;top:55%">
         <div class="pos-label">1st Base</div>
         <select class="pos-select" id="pos-1B" onchange="onAssign('1B',this)"><option value="">— select —</option></select>
       </div>
-      <div class="pos-overlay" style="left:50%;top:24.5%">
+      <div class="pos-overlay" style="left:50%;top:26%">
         <div class="pos-label">2nd Base</div>
         <select class="pos-select" id="pos-2B" onchange="onAssign('2B',this)"><option value="">— select —</option></select>
       </div>
-      <div class="pos-overlay" style="left:19%;top:55%">
+      <div class="pos-overlay" style="left:20%;top:55%">
         <div class="pos-label">3rd Base</div>
         <select class="pos-select" id="pos-3B" onchange="onAssign('3B',this)"><option value="">— select —</option></select>
       </div>
-      <div class="pos-overlay" style="left:31%;top:38%">
+      <div class="pos-overlay" style="left:32%;top:39%">
         <div class="pos-label">Shortstop</div>
         <select class="pos-select" id="pos-SS" onchange="onAssign('SS',this)"><option value="">— select —</option></select>
       </div>
-      <div class="pos-overlay" style="left:17%;top:20%">
+
+      <!-- Outfield — 5 positions -->
+      <div class="pos-overlay" style="left:11%;top:18%">
         <div class="pos-label">Left Field</div>
         <select class="pos-select" id="pos-LF" onchange="onAssign('LF',this)"><option value="">— select —</option></select>
       </div>
-      <div class="pos-overlay" style="left:37%;top:10%">
+      <div class="pos-overlay" style="left:31%;top:9%">
         <div class="pos-label">Left Center</div>
         <select class="pos-select" id="pos-LC" onchange="onAssign('LC',this)"><option value="">— select —</option></select>
       </div>
-      <div class="pos-overlay" style="left:63%;top:10%">
+      <div class="pos-overlay" style="left:50%;top:6%">
+        <div class="pos-label">Center</div>
+        <select class="pos-select" id="pos-CF" onchange="onAssign('CF',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:69%;top:9%">
         <div class="pos-label">Right Center</div>
         <select class="pos-select" id="pos-RC" onchange="onAssign('RC',this)"><option value="">— select —</option></select>
       </div>
-      <div class="pos-overlay" style="left:83%;top:20%">
+      <div class="pos-overlay" style="left:89%;top:18%">
         <div class="pos-label">Right Field</div>
         <select class="pos-select" id="pos-RF" onchange="onAssign('RF',this)"><option value="">— select —</option></select>
       </div>
     </div>
 
     <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div> Assigned</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div> Wave 1 assigned</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--wave2)"></div> Wave 2 assigned</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Pitcher</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--border)"></div> Open</div>
     </div>
   </div>
 
-  <!-- ROSTER -->
-  <div class="panel">
-    <div class="panel-title">📋 Roster</div>
+  <!-- ── KICKING ORDER ───────────────────────────── -->
+  <div class="card">
+    <div class="card-title">
+      <span>👟 Kicking Order</span>
+      <span style="font-size:0.75rem;color:var(--muted);font-family:'Barlow',sans-serif;font-weight:400;letter-spacing:0">Drag to reorder</span>
+    </div>
+    <ul class="kick-list" id="kickList">
+      <li class="kick-empty" id="kickEmpty">Check players in as present to build the kicking order.</li>
+    </ul>
+  </div>
+
+  <!-- ── ROSTER ──────────────────────────────────── -->
+  <div class="card">
+    <div class="card-title">📋 Roster</div>
 
     <div class="roster-input-row">
-      <input id="playerInput" type="text" placeholder="Add player (First Last)…" />
-      <input id="pref1Input" type="text" placeholder="Pref 1 (optional)" style="max-width:160px"/>
-      <input id="pref2Input" type="text" placeholder="Pref 2 (optional)" style="max-width:160px"/>
+      <input id="playerInput" type="text" placeholder="First Last" />
+      <input id="pref1Input" type="text" placeholder="Pref 1" style="max-width:130px" class="col-pref"/>
+      <input id="pref2Input" type="text" placeholder="Pref 2" style="max-width:130px" class="col-pref"/>
       <button class="btn" onclick="addPlayer()">Add</button>
     </div>
 
     <table class="roster-table">
       <thead>
         <tr>
+          <th style="width:32px">✓</th>
           <th>Player</th>
-          <th>1st Choice</th>
-          <th>2nd Choice</th>
-          <th></th>
+          <th class="col-pref">1st Choice</th>
+          <th class="col-pref">2nd Choice</th>
+          <th style="width:32px"></th>
         </tr>
       </thead>
       <tbody id="rosterBody"></tbody>
     </table>
 
     <div class="bench-section">
-      <div class="bench-label">⬇ Unassigned / Bench</div>
+      <div class="bench-label">⬇ Present but Unassigned</div>
       <div class="bench-chips" id="benchChips"></div>
     </div>
 
     <div class="action-row">
       <button class="btn" onclick="generateText()">📋 Copy Lineup</button>
-      <button class="btn btn-ghost btn-sm" onclick="clearAssignments()">Clear Assignments</button>
     </div>
-
     <pre class="copy-output" id="copyOutput"></pre>
   </div>
 
 </main>
 
 <script>
-const POSITIONS = ['P','C','1B','2B','3B','SS','LF','LC','RC','RF'];
+// ── POSITIONS ─────────────────────────────────────────────
+const POSITIONS = ['P','C','1B','2B','3B','SS','LF','LC','CF','RC','RF'];
 const POS_LABELS = {
   P:'Pitcher', C:'Catcher', '1B':'1st Base', '2B':'2nd Base',
   '3B':'3rd Base', SS:'Shortstop',
-  LF:'Left Field', LC:'Left Center', RC:'Right Center', RF:'Right Field'
+  LF:'Left Field', LC:'Left Center', CF:'Center', RC:'Right Center', RF:'Right Field'
 };
 
-// Survey label → field position key mapping
-const SURVEY_TO_POS = {
-  'Pitcher':       'P',
-  'Catcher':       'C',
-  '1st Base':      '1B',
-  '2nd Base':      '2B',
-  '3rd Base':      '3B',
-  'Shortstop':     'SS',
-  'Left Field':    'LF',
-  'Right Field':   'RF',
-  'Center Field':  'LC',   // map center to left-center (closest match)
-};
-
-// Pre-loaded roster from survey
+// ── ROSTER DATA ───────────────────────────────────────────
 const INITIAL_ROSTER = [
   { name: 'David Goddard',       pref1: 'RF',  pref2: 'LF'  },
   { name: 'James Brandon',       pref1: 'LF',  pref2: 'LC'  },
   { name: 'Joshua Redman',       pref1: '1B',  pref2: 'C'   },
-  { name: "Stephen O'Neall",     pref1: 'LC',  pref2: 'LF'  },
-  { name: 'Brett Opitz',         pref1: 'RF',  pref2: 'LC'  },
+  { name: "Stephen O'Neall",     pref1: 'CF',  pref2: 'LF'  },
+  { name: 'Brett Opitz',         pref1: 'RF',  pref2: 'CF'  },
   { name: 'Michael Hendricks',   pref1: 'P',   pref2: 'SS'  },
   { name: 'Michael Blake',       pref1: 'LF',  pref2: 'RF'  },
   { name: 'Tim Duckworth',       pref1: 'RF',  pref2: 'LF'  },
   { name: 'Alex Cortes',         pref1: '1B',  pref2: '2B'  },
-  { name: 'Christopher Montiel', pref1: '2B',  pref2: 'LC'  },
+  { name: 'Christopher Montiel', pref1: '2B',  pref2: 'CF'  },
   { name: 'Ben Fewkes',          pref1: '2B',  pref2: 'LF'  },
   { name: 'Michael Silver',      pref1: 'C',   pref2: '2B'  },
   { name: 'JJ Dearmore',         pref1: '2B',  pref2: 'P'   },
@@ -437,193 +544,339 @@ const INITIAL_ROSTER = [
   { name: 'Ryan Cretton',        pref1: 'LF',  pref2: '3B'  },
 ];
 
-let roster = JSON.parse(JSON.stringify(INITIAL_ROSTER));
-let assignments = {};
+let roster      = JSON.parse(JSON.stringify(INITIAL_ROSTER));
+// present: Set of names checked in
+let present     = new Set();
+// assignments: { 1: {pos: name}, 2: {pos: name} }
+let assignments = { 1: {}, 2: {} };
+let currentWave = 1;
+// kickOrder: ordered array of names (present players)
+let kickOrder   = [];
 
-// ── ADD PLAYER ───────────────────────────────────────────
+// ── WAVE ─────────────────────────────────────────────────
+function setWave(w) {
+  currentWave = w;
+  document.getElementById('btnW1').className = 'wave-btn' + (w === 1 ? ' active-w1' : '');
+  document.getElementById('btnW2').className = 'wave-btn' + (w === 2 ? ' active-w2' : '');
+  rebuildSelects();
+}
+
+// ── ATTENDANCE ────────────────────────────────────────────
+function togglePresent(name, checked) {
+  if (checked) {
+    present.add(name);
+    // append to kick order if not already there
+    if (!kickOrder.includes(name)) kickOrder.push(name);
+  } else {
+    present.delete(name);
+    kickOrder = kickOrder.filter(n => n !== name);
+    // remove from both waves
+    [1,2].forEach(w => {
+      for (const pos in assignments[w]) {
+        if (assignments[w][pos] === name) delete assignments[w][pos];
+      }
+    });
+  }
+  rebuildSelects();
+  renderBench();
+  renderKickOrder();
+}
+
+// ── ADD PLAYER ────────────────────────────────────────────
 function addPlayer() {
-  const nameInput = document.getElementById('playerInput');
-  const p1Input   = document.getElementById('pref1Input');
-  const p2Input   = document.getElementById('pref2Input');
-  const name = nameInput.value.trim();
+  const nameEl = document.getElementById('playerInput');
+  const p1El   = document.getElementById('pref1Input');
+  const p2El   = document.getElementById('pref2Input');
+  const name   = nameEl.value.trim();
   if (!name) return;
   if (roster.find(p => p.name.toLowerCase() === name.toLowerCase())) {
     alert('Player already on roster.'); return;
   }
-  roster.push({ name, pref1: p1Input.value.trim(), pref2: p2Input.value.trim() });
-  nameInput.value = ''; p1Input.value = ''; p2Input.value = '';
+  roster.push({ name, pref1: p1El.value.trim(), pref2: p2El.value.trim() });
+  nameEl.value = ''; p1El.value = ''; p2El.value = '';
   renderRoster(); rebuildSelects(); renderBench();
 }
 document.getElementById('playerInput').addEventListener('keydown', e => { if (e.key === 'Enter') addPlayer(); });
 
-// ── REMOVE PLAYER ────────────────────────────────────────
+// ── REMOVE PLAYER ─────────────────────────────────────────
 function removePlayer(name) {
   roster = roster.filter(p => p.name !== name);
-  for (const pos in assignments) { if (assignments[pos] === name) delete assignments[pos]; }
-  renderRoster(); rebuildSelects(); renderBench();
+  present.delete(name);
+  kickOrder = kickOrder.filter(n => n !== name);
+  [1,2].forEach(w => {
+    for (const pos in assignments[w]) {
+      if (assignments[w][pos] === name) delete assignments[w][pos];
+    }
+  });
+  renderRoster(); rebuildSelects(); renderBench(); renderKickOrder();
 }
 
-// ── RENDER ROSTER TABLE ──────────────────────────────────
+// ── RENDER ROSTER ─────────────────────────────────────────
 function renderRoster() {
   const tbody = document.getElementById('rosterBody');
   tbody.innerHTML = '';
   roster.forEach(p => {
-    const assignedPos = Object.entries(assignments).find(([,n]) => n === p.name);
-    const assignedLabel = assignedPos ? POS_LABELS[assignedPos[0]] : null;
+    const isPresent = present.has(p.name);
+    const w1pos = Object.entries(assignments[1]).find(([,n]) => n === p.name);
+    const w2pos = Object.entries(assignments[2]).find(([,n]) => n === p.name);
 
     const tr = document.createElement('tr');
+    if (!isPresent) tr.className = 'absent';
 
     const p1label = p.pref1 ? (POS_LABELS[p.pref1] || p.pref1) : '';
     const p2label = p.pref2 ? (POS_LABELS[p.pref2] || p.pref2) : '';
 
+    const safeName = p.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     tr.innerHTML = `
+      <td><input type="checkbox" class="attend-cb" ${isPresent ? 'checked' : ''} onchange="togglePresent('${safeName}', this.checked)"/></td>
       <td class="name-cell">
         ${p.name}
-        ${assignedLabel ? `<span style="font-size:0.72rem;color:var(--teal);margin-left:6px">(${assignedLabel})</span>` : ''}
+        ${w1pos ? `<span class="assigned-tag">W1:${POS_LABELS[w1pos[0]]}</span>` : ''}
+        ${w2pos ? `<span class="assigned-tag w2">W2:${POS_LABELS[w2pos[0]]}</span>` : ''}
       </td>
-      <td>${p1label ? `<span class="pref-badge p1">${p1label}</span>` : '<span class="pref-badge none">—</span>'}</td>
-      <td>${p2label ? `<span class="pref-badge p2">${p2label}</span>` : '<span class="pref-badge none">—</span>'}</td>
-      <td><button class="btn btn-ghost btn-sm" onclick="removePlayer('${p.name.replace(/'/g,"\\'")}')">✕</button></td>
+      <td class="col-pref">${p1label ? `<span class="pref-badge p1">${p1label}</span>` : '—'}</td>
+      <td class="col-pref">${p2label ? `<span class="pref-badge p2">${p2label}</span>` : '—'}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="removePlayer('${safeName}')">✕</button></td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-// ── REBUILD FIELD SELECTS ────────────────────────────────
+// ── REBUILD FIELD SELECTS ─────────────────────────────────
 function rebuildSelects() {
+  const wave = currentWave;
   POSITIONS.forEach(pos => {
     const sel = document.getElementById(`pos-${pos}`);
-    const current = assignments[pos] || '';
+    const current = assignments[wave][pos] || '';
 
-    // Build options: unassigned players + currently assigned player for this pos
-    const available = roster.filter(p => {
-      const assignedElsewhere = Object.entries(assignments).some(([aPos, aName]) => aName === p.name && aPos !== pos);
-      return !assignedElsewhere || p.name === current;
+    // Only present players
+    const available = [...present].filter(name => {
+      const assignedElsewhere = Object.entries(assignments[wave])
+        .some(([aPos, aName]) => aName === name && aPos !== pos);
+      return !assignedElsewhere || name === current;
     });
 
-    // Sort: prefer players whose pref1 or pref2 matches this position first
+    // Sort: pref1 match → pref2 match → rest
+    const playerMap = Object.fromEntries(roster.map(p => [p.name, p]));
     available.sort((a, b) => {
-      const aScore = (a.pref1 === pos ? 0 : a.pref2 === pos ? 1 : 2);
-      const bScore = (b.pref1 === pos ? 0 : b.pref2 === pos ? 1 : 2);
-      return aScore - bScore || a.name.localeCompare(b.name);
+      const pa = playerMap[a] || {};
+      const pb = playerMap[b] || {};
+      const aS = pa.pref1 === pos ? 0 : pa.pref2 === pos ? 1 : 2;
+      const bS = pb.pref1 === pos ? 0 : pb.pref2 === pos ? 1 : 2;
+      return aS - bS || a.localeCompare(b);
     });
 
     sel.innerHTML = '<option value="">— select —</option>';
-
-    let lastGroup = -1;
-    available.forEach(p => {
-      const score = (p.pref1 === pos ? 0 : p.pref2 === pos ? 1 : 2);
-      // Add option group dividers via disabled options
-      if (score !== lastGroup && available.some(x => (x.pref1 === pos ? 0 : x.pref2 === pos ? 1 : 2) !== score || x === p)) {
-        lastGroup = score;
-      }
-      const opt = document.createElement('option');
-      opt.value = p.name;
+    available.forEach(name => {
+      const p = playerMap[name] || {};
       const star = p.pref1 === pos ? ' ★' : p.pref2 === pos ? ' ☆' : '';
-      opt.textContent = p.name + star;
+      const opt = document.createElement('option');
+      opt.value = name;
+      // Shorten to first name + last initial for narrow dropdowns
+      const parts = name.split(' ');
+      opt.textContent = (parts.length > 1 ? parts[0] + ' ' + parts[parts.length-1][0] + '.' : name) + star;
       sel.appendChild(opt);
     });
 
     sel.value = current;
-    sel.classList.toggle('filled', !!current);
+    const isFilled = !!current;
+    sel.className = 'pos-select' + (isFilled ? (wave === 2 ? ' filled-w2' : ' filled') : '');
   });
-  renderRoster(); // refresh assigned label in roster
+
+  renderRoster();
 }
 
 function onAssign(pos, sel) {
   const name = sel.value;
-  assignments[pos] = name || undefined;
-  if (!name) delete assignments[pos];
+  assignments[currentWave][pos] = name || undefined;
+  if (!name) delete assignments[currentWave][pos];
   rebuildSelects();
   renderBench();
 }
 
 // ── BENCH ─────────────────────────────────────────────────
 function renderBench() {
-  const assigned = new Set(Object.values(assignments));
-  const bench = roster.filter(p => !assigned.has(p.name));
+  const assigned = new Set(Object.values(assignments[currentWave]));
+  const bench = [...present].filter(n => !assigned.has(n));
   const container = document.getElementById('benchChips');
   container.innerHTML = '';
-  if (bench.length === 0 && roster.length > 0) {
-    container.innerHTML = '<span style="color:var(--teal);font-size:0.82rem">All players assigned ✓</span>';
+  if (bench.length === 0 && present.size > 0) {
+    container.innerHTML = '<span style="color:var(--teal);font-size:0.82rem">All present players assigned ✓</span>';
     return;
   }
-  bench.forEach(p => {
+  bench.forEach(name => {
     const chip = document.createElement('span');
-    chip.className = 'bench-chip unassigned';
-    chip.textContent = p.name;
+    chip.className = 'bench-chip';
+    chip.textContent = name;
     container.appendChild(chip);
   });
 }
 
 // ── AUTO FILL ─────────────────────────────────────────────
 function autoFill() {
-  const assigned = new Set(Object.values(assignments));
-  const available = roster.filter(p => !assigned.has(p.name));
-  const open = POSITIONS.filter(pos => !assignments[pos]);
-
-  // Greedy: assign players to their preferred open positions first
+  const wave = currentWave;
+  const assigned = new Set(Object.values(assignments[wave]));
+  const available = [...present].filter(n => !assigned.has(n));
+  const open = POSITIONS.filter(pos => !assignments[wave][pos]);
+  const playerMap = Object.fromEntries(roster.map(p => [p.name, p]));
   const used = new Set();
-  // Pass 1: pref1 matches
-  open.forEach(pos => {
-    if (assignments[pos]) return;
-    const match = available.find(p => !used.has(p.name) && p.pref1 === pos);
-    if (match) { assignments[pos] = match.name; used.add(match.name); }
-  });
-  // Pass 2: pref2 matches
-  open.forEach(pos => {
-    if (assignments[pos]) return;
-    const match = available.find(p => !used.has(p.name) && p.pref2 === pos);
-    if (match) { assignments[pos] = match.name; used.add(match.name); }
-  });
-  // Pass 3: fill remaining randomly
-  const remaining = available.filter(p => !used.has(p.name)).sort(() => Math.random() - 0.5);
-  let ri = 0;
-  open.forEach(pos => {
-    if (!assignments[pos] && remaining[ri]) { assignments[pos] = remaining[ri++].name; }
-  });
 
-  rebuildSelects();
-  renderBench();
+  // Pass 1: pref1
+  open.forEach(pos => {
+    if (assignments[wave][pos]) return;
+    const m = available.find(n => !used.has(n) && (playerMap[n]||{}).pref1 === pos);
+    if (m) { assignments[wave][pos] = m; used.add(m); }
+  });
+  // Pass 2: pref2
+  open.forEach(pos => {
+    if (assignments[wave][pos]) return;
+    const m = available.find(n => !used.has(n) && (playerMap[n]||{}).pref2 === pos);
+    if (m) { assignments[wave][pos] = m; used.add(m); }
+  });
+  // Pass 3: random
+  const rem = available.filter(n => !used.has(n)).sort(() => Math.random() - 0.5);
+  let ri = 0;
+  open.forEach(pos => { if (!assignments[wave][pos] && rem[ri]) assignments[wave][pos] = rem[ri++]; });
+
+  rebuildSelects(); renderBench();
 }
 
 // ── CLEAR ─────────────────────────────────────────────────
-function clearAssignments() {
-  if (!confirm('Clear all field assignments?')) return;
-  assignments = {};
-  rebuildSelects();
-  renderBench();
+function clearLineup() {
+  assignments[currentWave] = {};
+  rebuildSelects(); renderBench();
 }
 
-// ── COPY TEXT ─────────────────────────────────────────────
+// ── COPY ──────────────────────────────────────────────────
 function generateText() {
   const lines = ['🍆 EGGPLANT KICKBALL LINEUP 🍆', ''];
-  POSITIONS.forEach(pos => {
-    const name = assignments[pos] || '(open)';
-    lines.push(`${POS_LABELS[pos].padEnd(14)} ${name}`);
-  });
-  const assigned = new Set(Object.values(assignments));
-  const bench = roster.filter(p => !assigned.has(p.name));
-  if (bench.length) {
+  [1,2].forEach(w => {
+    lines.push(`── WAVE ${w} ──`);
+    POSITIONS.forEach(pos => {
+      const name = assignments[w][pos] || '(open)';
+      lines.push(`${POS_LABELS[pos].padEnd(14)} ${name}`);
+    });
     lines.push('');
-    lines.push(`Bench: ${bench.map(p => p.name).join(', ')}`);
-  }
+  });
+  lines.push('── KICKING ORDER ──');
+  kickOrder.forEach((n, i) => lines.push(`${String(i+1).padStart(2)}. ${n}`));
+  const assigned = new Set([...Object.values(assignments[1]), ...Object.values(assignments[2])]);
+  const bench = [...present].filter(n => !assigned.has(n));
+  if (bench.length) { lines.push(''); lines.push('Bench: ' + bench.join(', ')); }
+
   const text = lines.join('\n');
   const out = document.getElementById('copyOutput');
   out.textContent = text;
   out.style.display = 'block';
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.action-row .btn');
-    const orig = btn.textContent;
-    btn.textContent = '✓ Copied!';
-    setTimeout(() => btn.textContent = orig, 1800);
-  }).catch(() => {});
+  navigator.clipboard.writeText(text).catch(() => {});
+  const btn = document.querySelector('.action-row .btn');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Copied!';
+  setTimeout(() => btn.textContent = orig, 1800);
+}
+
+// ── KICKING ORDER DRAG ────────────────────────────────────
+let dragSrc = null;
+
+function renderKickOrder() {
+  const ul = document.getElementById('kickList');
+  const empty = document.getElementById('kickEmpty');
+
+  ul.innerHTML = '';
+  if (kickOrder.length === 0) {
+    const li = document.createElement('li');
+    li.className = 'kick-empty';
+    li.textContent = 'Check players in as present to build the kicking order.';
+    ul.appendChild(li);
+    return;
+  }
+
+  kickOrder.forEach((name, idx) => {
+    const li = document.createElement('li');
+    li.className = 'kick-item';
+    li.draggable = true;
+    li.dataset.name = name;
+    li.innerHTML = `
+      <span class="kick-num">${idx + 1}</span>
+      <span class="kick-name">${name}</span>
+      <span class="kick-handle">⠿</span>
+    `;
+
+    // Desktop drag
+    li.addEventListener('dragstart', e => {
+      dragSrc = li;
+      li.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    li.addEventListener('dragend', () => {
+      li.classList.remove('dragging');
+      document.querySelectorAll('.kick-item').forEach(el => el.classList.remove('drag-over'));
+    });
+    li.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (li !== dragSrc) li.classList.add('drag-over');
+    });
+    li.addEventListener('dragleave', () => li.classList.remove('drag-over'));
+    li.addEventListener('drop', e => {
+      e.preventDefault();
+      if (dragSrc && dragSrc !== li) {
+        const fromName = dragSrc.dataset.name;
+        const toName   = li.dataset.name;
+        const fromIdx  = kickOrder.indexOf(fromName);
+        const toIdx    = kickOrder.indexOf(toName);
+        kickOrder.splice(fromIdx, 1);
+        kickOrder.splice(toIdx, 0, fromName);
+        renderKickOrder();
+      }
+    });
+
+    // Touch drag
+    let touchStartY = 0, touchItem = null;
+    li.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+      touchItem = li;
+      li.classList.add('dragging');
+    }, { passive: true });
+    li.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const y = e.touches[0].clientY;
+      const els = [...document.querySelectorAll('.kick-item')];
+      els.forEach(el => el.classList.remove('drag-over'));
+      const target = els.find(el => {
+        const r = el.getBoundingClientRect();
+        return y >= r.top && y <= r.bottom && el !== touchItem;
+      });
+      if (target) target.classList.add('drag-over');
+    }, { passive: false });
+    li.addEventListener('touchend', e => {
+      li.classList.remove('dragging');
+      const y = e.changedTouches[0].clientY;
+      const els = [...document.querySelectorAll('.kick-item')];
+      els.forEach(el => el.classList.remove('drag-over'));
+      const target = els.find(el => {
+        const r = el.getBoundingClientRect();
+        return y >= r.top && y <= r.bottom && el !== li;
+      });
+      if (target) {
+        const fromName = li.dataset.name;
+        const toName   = target.dataset.name;
+        const fromIdx  = kickOrder.indexOf(fromName);
+        const toIdx    = kickOrder.indexOf(toName);
+        kickOrder.splice(fromIdx, 1);
+        kickOrder.splice(toIdx, 0, fromName);
+        renderKickOrder();
+      }
+    });
+
+    ul.appendChild(li);
+  });
 }
 
 // ── INIT ──────────────────────────────────────────────────
 renderRoster();
 rebuildSelects();
 renderBench();
+renderKickOrder();
 </script>
 </body>
 </html>
