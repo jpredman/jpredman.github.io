@@ -1,473 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kickball Lineup | Eggplant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:    #1a2a3a;
+      --teal:    #18bc9c;
+      --teal-dk: #13a085;
+      --teal-lt: #2ee8bf;
+      --dark:    #0f1c28;
+      --card:    #213447;
+      --border:  #2d4a63;
+      --text:    #d0e8f2;
+      --muted:   #7ea8c0;
+      --white:   #ffffff;
+      --red:     #e74c3c;
+    }
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <title>Joshua Redman Consulting</title>
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+    }
 
-    <!-- Bootstrap Core CSS -->
-    <!-- <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+    /* ── HEADER ─────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, #0d2035 100%);
+      border-bottom: 3px solid var(--teal);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .ball-icon {
+      width: 42px; height: 42px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+    header .logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      color: var(--teal);
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+    header .tagline {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
-    <!-- Theme CSS -->
-    <!-- <link href="css/freelancer.min.css" rel="stylesheet">  -->
-     <link href="css/freelancer.css" rel="stylesheet"> 
+    /* ── MAIN ────────────────────────────────────── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
 
-    <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    /* ── FIELD ───────────────────────────────────── */
+    .field-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .field-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .field-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.3rem;
+      color: var(--teal);
+      letter-spacing: 2px;
+    }
 
+    .field-svg-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .field-svg-wrap svg { width: 100%; height: 100%; }
+
+    .pos-overlay {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+    .pos-label {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      color: var(--white);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+      margin-bottom: 3px;
+      white-space: nowrap;
+    }
+    .pos-select {
+      background: rgba(10,25,40,0.88);
+      border: 1.5px solid var(--teal);
+      border-radius: 20px;
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      cursor: pointer;
+      min-width: 100px;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .pos-select:focus { outline: none; border-color: var(--teal-lt); background: rgba(10,25,40,0.97); }
+    .pos-select.filled { background: rgba(24,188,156,0.18); border-color: var(--teal-lt); }
+    .pos-select option { background: #0f1c28; }
+    .pos-overlay.pitcher .pos-select { border-color: var(--red); }
+    .pos-overlay.pitcher .pos-select.filled { background: rgba(231,76,60,0.18); border-color: #ff6b5b; }
+
+    .legend {
+      display: flex; gap: 18px; flex-wrap: wrap;
+      margin-top: 14px; font-size: 0.78rem; color: var(--muted);
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── ROSTER PANEL ────────────────────────────── */
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .panel-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.3rem;
+      color: var(--teal);
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .roster-input-row {
+      display: flex; gap: 8px; margin-bottom: 18px;
+    }
+    .roster-input-row input {
+      flex: 1;
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--white);
+      padding: 8px 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem;
+    }
+    .roster-input-row input:focus { outline: none; border-color: var(--teal); }
+
+    /* ── ROSTER TABLE ────────────────────────────── */
+    .roster-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 18px;
+      font-size: 0.88rem;
+    }
+    .roster-table thead th {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      text-align: left;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .roster-table tbody tr:hover { background: rgba(24,188,156,0.05); }
+    .roster-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid rgba(45,74,99,0.4);
+      vertical-align: middle;
+    }
+    .roster-table td.name-cell { font-weight: 600; color: var(--white); }
+
+    .pref-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .pref-badge.p1 { background: rgba(24,188,156,0.15); border: 1px solid var(--teal-dk); color: var(--teal-lt); }
+    .pref-badge.p2 { background: rgba(24,188,156,0.06); border: 1px solid var(--border); color: var(--muted); }
+    .pref-badge.none { color: var(--border); font-style: italic; }
+
+    /* ── BUTTONS ─────────────────────────────────── */
+    .btn {
+      background: var(--teal);
+      color: var(--dark);
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn:hover { background: var(--teal-lt); }
+    .btn-sm { padding: 4px 10px; font-size: 0.78rem; border-radius: 4px; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { color: var(--red); border-color: var(--red); background: rgba(231,76,60,0.08); }
+
+    /* ── BENCH + ACTIONS ─────────────────────────── */
+    .bench-section { margin-top: 18px; }
+    .bench-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .bench-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .bench-chip {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .bench-chip.unassigned { color: var(--text); border-color: var(--teal-dk); }
+
+    .action-row { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+
+    .copy-output {
+      margin-top: 18px;
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 0.82rem;
+      color: var(--text);
+      white-space: pre;
+      font-family: 'Barlow', monospace;
+      line-height: 1.6;
+      display: none;
+    }
+  </style>
 </head>
+<body>
 
-<body id="page-top" class="index">
+<header>
+  <div class="ball-icon">🍆</div>
+  <div>
+    <div class="logo">Eggplant</div>
+    <div class="tagline">Kickball Lineup Manager</div>
+  </div>
+</header>
 
-    <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="#page-top">Joshua Redman Consulting</a>
-            </div>
+<main>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>                
-                    <li class="page-scroll">
-                        <a href="#portfolio">PROJECTS</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#about">About Me</a>
-                    </li>
-                  <li class="page-scroll">
-                        <a href="#contact">Work With Me</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
-
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/Profile.jpg" alt="" width=350px>
-                    <div class="intro-text">
-                        <span class="name">Joshua Redman Consulting</span>
-                        <hr class="star-light">
-                        <span class="skills">Spatial Analysis - Database Development - Data Analytics</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Portfolio Grid Section -->
-    <section id="portfolio">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Projects</h2>
-                    <hr class="star-primary" style="max-width: 1000px"> 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/CartoHUB.png" class="img-responsive" alt="">
-                    </a>
-                </div>
-                <!-- <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/BigBelly.png" class="img-responsive" alt="">
-                    </a>
-                </div>
-            -->
-                <!--<div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/BingMaps.png" class="img-responsive" alt="">
-                    </a>
-                </div> -->
-                <!-- <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/StonewallBilliards.PNG" class="img-responsive" alt="">
-                    </a>
-                </div> -->
-             <!--   <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/safe.png" class="img-responsive" alt="">
-                    </a>
-                </div> -->
-            <!--    <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/submarine.png" class="img-responsive" alt="">
-                    </a>
-                </div> -->
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="success" id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>About Me</h2>
-                    <hr class="star-light">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <p> I have 10 years' experience in database development and data analytics. My expertise is in Geographic Information Systems (GIS) and spatial database administration, having provided geospatial solutions within transportation, water resources, and floodplain management. My database work includes every aspect of the Database Development Life Cycle (DDLC), consisting of project scoping, conceptual data design, implementation, maintenance, and database evolution. Recently my work has been focused on mobile application development, digital mapping, and geoprocessing automation.
-                </div>
-                <div class="col-lg-4">
-                    <p>If you would like to work with me, <a href="#contact" style="color: #FFFFFF"><u>send me a message</u></a>. You can also follow me on <a target="_new" href="https://github.com/jpredman" style="color: #FFFFFF"><u>GitHub</u></a>, <a target="_new" href="https://twitter.com/JoshuaRedman" style="color: #FFFFFF"><u>Twitter</u></a>, and <a target="_new" href="https://www.linkedin.com/in/joshuaredman" style="color: #FFFFFF"><u>LinkedIn</u></a>.
-                    </p>
-                </div>
-                <!--<div class="col-lg-8 col-lg-offset-2 text-center">
-                    <a href="#" class="btn btn-lg btn-outline">
-                        <i class="fa fa-download"></i> Download Theme
-                    </a> -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-   <section id="contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Work With Me</h2>
-                    <hr class="star-primary">
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <span class="skills">Send me a message about your project and we can start a dialogue.</span>
-                    <br></br>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2"> 
-                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-                    <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                    <form name="sentMessage" id="contactForm" novalidate>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Name</label>
-                                <input type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Email Address</label>
-                                <input type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Message</label>
-                                <textarea rows="5" class="form-control" placeholder="Message" id="message" required data-validation-required-message="Please enter a message."></textarea>
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div id="success"></div>
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Send</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="text-center">
-        <div class="footer-above">
-            <div class="container">
-                <div class="row">
-                   <!-- <div class="footer-col col-md-4">
-                        <h3>Location</h3>
-                        <p>3481 Melrose Place
-                            <br>Beverly Hills, CA 90210</p>
-                    </div> -->
-                    <div class="footer-col">
-                        <h3>Around the Web</h3>
-                        <ul class="list-inline">
-                            <li>
-                                <a target="_new" href="https://github.com/jpredman" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
-                            </li>
-                            <li>
-                                <a target="_new" href="https://twitter.com/JoshuaRedman" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
-                            </li>
-                            <li>
-                                <a target="_new" href="https://www.linkedin.com/in/joshuaredman" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                   <!-- <div class="footer-col col-md-4">
-                        <h3>About Freelancer</h3>
-                        <p>Freelance is a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com">Start Bootstrap</a>.</p>
-                    </div> -->
-                </div>
-            </div>
-        </div>
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        jpredman.github.io 2016
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
-        <a class="btn btn-primary" href="#page-top">
-            <i class="fa fa-chevron-up"></i>
-        </a>
+  <!-- FIELD -->
+  <div class="field-wrap">
+    <div class="field-header">
+      <div class="field-title">🏟 Field Lineup</div>
+      <button class="btn btn-sm" onclick="autoFill()">Auto-Fill</button>
     </div>
 
-    <!-- Portfolio Modals -->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Airline Hubs Webapp</h2>
-                            <hr class="star-primary">
-<!-- link to CartoDB project page -->
-<!--                            <a  target="_new" href="https://jpredman.carto.com/builder/3af6a5ac-c08e-4f54-a7ed-549146c05059/embed?state=%7B%22map%22%3A%7B%22ne%22%3A%5B19.394067895396613%2C-133.06640625000003%5D%2C%22sw%22%3A%5B58.7682001592396%2C-59.94140625000001%5D%2C%22center%22%3A%5B42.032974332441405%2C-96.50390625000001%5D%2C%22zoom%22%3A4%7D%7D">
--->
-                            <!-- Leaflet project location -->
-                            <a target="_new" href="Proj/Airport/Airport.html">
-                                <img src="img/portfolio/CartoHUB.png" class="img-responsive img-centered" alt="">
-                            </a>
-                            <p>The impending <a target="_new" href="http://www.bloomberg.com/news/articles/2016-06-29/shrinking-pool-of-future-pilots-keeps-major-airlines-on-edge">pilot shortage</a> has airlines struggling to get the limited amount of pilots to choose their airline over competetors. Due to the nature of the industry, it is not advantageous for pilots to switch between airlines mid-career; a pilot is usually stuck working for the same airline until they retire. This gives pilots many options when deciding which airline to initially work for, but little flexibility later in their careers. The only flexibility they have is the opportunity to switch hubs as they gain seniority in an airline. There is no visual that easily displays the location of all major airline hubs in the United States.  
-                            </p>
-                            <p>
-                            This project aims to provide a visual aide for new pilots to use when determining which airline to build seniority with. The most consolidated airline industry information available is at <a target="_new" href="https://www.airlinepilotcentral.com/">AirlinePilotCentral.com</a>, which was used to pull together much of the background data. I used <a target="_new" href="https://www.postgresql.org/">PostgreSQL</a> to build an open-source database to house the information and<a target="_new" href="http://leafletjs.com/">LeafletJS</a> to display the information in a webmap.</p>
-                            <ul class="list-inline item-details">
-                                <li>
-                                    <!-- CARTO project map
-                                    <strong><a target="_new" href="https://jpredman.carto.com/builder/3af6a5ac-c08e-4f54-a7ed-549146c05059/embed?state=%7B%22map%22%3A%7B%22ne%22%3A%5B19.394067895396613%2C-133.06640625000003%5D%2C%22sw%22%3A%5B58.7682001592396%2C-59.94140625000001%5D%2C%22center%22%3A%5B42.032974332441405%2C-96.50390625000001%5D%2C%22zoom%22%3A4%7D%7D">Open Project</a>
-                                    </strong> -->
-                                    <strong><a target="_new" href="Proj/Airport/Airport.html">*OPEN PROJECT</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong></a>in progress
-                                    </strong>
-                                </li>
-                                <li>Tags:
-                                    <strong>#SpatialAnalysis #DataViz #Maps</a>
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="field-svg-wrap" id="fieldWrap">
+      <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+        <rect width="500" height="500" fill="#1a3a20"/>
+        <ellipse cx="250" cy="270" rx="230" ry="215" fill="#2d6a35"/>
+        <ellipse cx="250" cy="270" rx="218" ry="202" fill="#326e39"/>
+        <polygon points="250,420 100,270 250,120 400,270" fill="#c8a96a"/>
+        <ellipse cx="250" cy="270" rx="100" ry="100" fill="#3a8545"/>
+        <line x1="250" y1="420" x2="60" y2="60" stroke="white" stroke-width="1.5" opacity="0.5"/>
+        <line x1="250" y1="420" x2="440" y2="60" stroke="white" stroke-width="1.5" opacity="0.5"/>
+        <polygon points="250,420 100,270 250,120 400,270" fill="none" stroke="#e8c870" stroke-width="2" stroke-dasharray="6,4"/>
+        <polygon points="250,430 242,422 250,414 258,422" fill="white"/>
+        <rect x="390" y="262" width="18" height="18" rx="2" fill="white" transform="rotate(45,399,271)"/>
+        <rect x="241" y="111" width="18" height="18" rx="2" fill="white" transform="rotate(45,250,120)"/>
+        <rect x="91" y="262" width="18" height="18" rx="2" fill="white" transform="rotate(45,100,271)"/>
+        <circle cx="250" cy="275" r="18" fill="#b89a5a" stroke="#e8c870" stroke-width="1.5"/>
+      </svg>
+
+      <div class="pos-overlay pitcher" style="left:50%;top:55.5%">
+        <div class="pos-label">Pitcher</div>
+        <select class="pos-select" id="pos-P" onchange="onAssign('P',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:50%;top:88%">
+        <div class="pos-label">Catcher</div>
+        <select class="pos-select" id="pos-C" onchange="onAssign('C',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:81%;top:55%">
+        <div class="pos-label">1st Base</div>
+        <select class="pos-select" id="pos-1B" onchange="onAssign('1B',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:50%;top:24.5%">
+        <div class="pos-label">2nd Base</div>
+        <select class="pos-select" id="pos-2B" onchange="onAssign('2B',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:19%;top:55%">
+        <div class="pos-label">3rd Base</div>
+        <select class="pos-select" id="pos-3B" onchange="onAssign('3B',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:31%;top:38%">
+        <div class="pos-label">Shortstop</div>
+        <select class="pos-select" id="pos-SS" onchange="onAssign('SS',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:17%;top:20%">
+        <div class="pos-label">Left Field</div>
+        <select class="pos-select" id="pos-LF" onchange="onAssign('LF',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:37%;top:10%">
+        <div class="pos-label">Left Center</div>
+        <select class="pos-select" id="pos-LC" onchange="onAssign('LC',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:63%;top:10%">
+        <div class="pos-label">Right Center</div>
+        <select class="pos-select" id="pos-RC" onchange="onAssign('RC',this)"><option value="">— select —</option></select>
+      </div>
+      <div class="pos-overlay" style="left:83%;top:20%">
+        <div class="pos-label">Right Field</div>
+        <select class="pos-select" id="pos-RF" onchange="onAssign('RF',this)"><option value="">— select —</option></select>
+      </div>
     </div>
-    <!-- <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>South Philly Open Data</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/BigBelly.png" class="img-responsive img-centered" alt="">
-                            <p>The main idea for this project is to use Philadelphia’s open data to create a trash bin desert map in South Philadelphia. While recently walking through South Philly, I noticed that there was an alarming amount of trash in the streets. There were also almost no trash cans to be found. South Philly will continue to collect trash if the city does not provide receptacles to dispose of litter. By providing a trash desert map, there will be a visualization of blocks that are in the most need of trash bins. The city of Philadelphia’s <a target="_new" href="https://www.opendataphilly.org/dataset">open data portal</a> has the data for the location of their waste wire trash bins as well as the <a target="_new" href="http://www.philadelphiastreets.com/sanitation/the-bigbelly-program/">Big Belly</a> trash bins.</p>
-                            <p>Current status: data gathering</p>
-                            <ul class="list-inline item-details">
-                                <li>
-                                    <strong>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong></a>in progress
-                                    </strong>
-                                </li>
-                                <li>Tags:
-                                    <strong>#SpatialAnalysis #Maps #DataViz #WebDev</a>
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-   <!-- <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Web App - Bing Maps</h2>
-                            <hr class="star-primary">
-                            <a target="_new" href="Proj/Bing/Bing.html">
-                                <img src="img/portfolio/BingMaps.png" class="img-responsive img-centered" alt="">
-                            </a>
-                            <p> This was the first application I created using JavaScript. It was created in my master's level GIS Application Development class using Eclipse IDE and Bing Maps AJAX controls. While the application looks a little anachronistic, it was fun building an application that incorporates maps while learning how to tinker with JavaScript and the Bing Maps API.
-                            </p>
-                            <p>
-                            The application is a map of the Washington, D.C. area and all of the Smithsonian Museums in the district. It includes a list of the museums with a link to their respective pages. Info boxes pop up when you mouse over the lists or custom icons and disappear on mouse out. The lists and the picture in the info box link to the museum webpage. Also included is a "Get Directions" button that routes out the directions to three different museums.
-                            <p>
-                            </p>
-                            <ul class="list-inline item-details">
-                                <li>
-                                    <strong><a target="_new" href="Proj/Bing/Bing.html">Open Project</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>April 2014
-                                    </strong>
-                                </li>
-                                <li>Tags:
-                                    <strong>#Maps #WebDev #Javascript
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Stonewall Billiards Website</h2>
-                            <hr class="star-primary">
-                            <a target="_new" href="http://www.stonewallbilliardsdc.com/">
-                            <img src="img/portfolio/StonewallBilliards.PNG" class="img-responsive img-centered" alt="">
-                            </a>
-                            <p>I created a website for Washiington, DC's LGBT billiards league, Stonewall Billiards. This was created using a drag-and-drop website builder, <a target="_new" href="https://www.wix.com/">Wix.com</a>. There were no HTML/CSS skills needed, only design principles. I continuously update the website throughout the season.</p>
-                            <ul class="list-inline item-details">
-                                <li>
-                                    <strong><a href="http://www.stonewallbilliardsdc.com/">Open Project</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>December 2015
-                                    </strong>
-                                </li>
-                                <li>Tags:
-                                    <strong>#WebDesign
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
-    <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div> Assigned</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Pitcher</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--border)"></div> Open</div>
+    </div>
+  </div>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!-- ROSTER -->
+  <div class="panel">
+    <div class="panel-title">📋 Roster</div>
 
-    <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <div class="roster-input-row">
+      <input id="playerInput" type="text" placeholder="Add player (First Last)…" />
+      <input id="pref1Input" type="text" placeholder="Pref 1 (optional)" style="max-width:160px"/>
+      <input id="pref2Input" type="text" placeholder="Pref 2 (optional)" style="max-width:160px"/>
+      <button class="btn" onclick="addPlayer()">Add</button>
+    </div>
 
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
+    <table class="roster-table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>1st Choice</th>
+          <th>2nd Choice</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="rosterBody"></tbody>
+    </table>
 
-    <!-- Theme JavaScript -->
-    <script src="js/freelancer.min.js"></script>
+    <div class="bench-section">
+      <div class="bench-label">⬇ Unassigned / Bench</div>
+      <div class="bench-chips" id="benchChips"></div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn" onclick="generateText()">📋 Copy Lineup</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearAssignments()">Clear Assignments</button>
+    </div>
+
+    <pre class="copy-output" id="copyOutput"></pre>
+  </div>
+
+</main>
+
+<script>
+const POSITIONS = ['P','C','1B','2B','3B','SS','LF','LC','RC','RF'];
+const POS_LABELS = {
+  P:'Pitcher', C:'Catcher', '1B':'1st Base', '2B':'2nd Base',
+  '3B':'3rd Base', SS:'Shortstop',
+  LF:'Left Field', LC:'Left Center', RC:'Right Center', RF:'Right Field'
+};
+
+// Survey label → field position key mapping
+const SURVEY_TO_POS = {
+  'Pitcher':       'P',
+  'Catcher':       'C',
+  '1st Base':      '1B',
+  '2nd Base':      '2B',
+  '3rd Base':      '3B',
+  'Shortstop':     'SS',
+  'Left Field':    'LF',
+  'Right Field':   'RF',
+  'Center Field':  'LC',   // map center to left-center (closest match)
+};
+
+// Pre-loaded roster from survey
+const INITIAL_ROSTER = [
+  { name: 'David Goddard',       pref1: 'RF',  pref2: 'LF'  },
+  { name: 'James Brandon',       pref1: 'LF',  pref2: 'LC'  },
+  { name: 'Joshua Redman',       pref1: '1B',  pref2: 'C'   },
+  { name: "Stephen O'Neall",     pref1: 'LC',  pref2: 'LF'  },
+  { name: 'Brett Opitz',         pref1: 'RF',  pref2: 'LC'  },
+  { name: 'Michael Hendricks',   pref1: 'P',   pref2: 'SS'  },
+  { name: 'Michael Blake',       pref1: 'LF',  pref2: 'RF'  },
+  { name: 'Tim Duckworth',       pref1: 'RF',  pref2: 'LF'  },
+  { name: 'Alex Cortes',         pref1: '1B',  pref2: '2B'  },
+  { name: 'Christopher Montiel', pref1: '2B',  pref2: 'LC'  },
+  { name: 'Ben Fewkes',          pref1: '2B',  pref2: 'LF'  },
+  { name: 'Michael Silver',      pref1: 'C',   pref2: '2B'  },
+  { name: 'JJ Dearmore',         pref1: '2B',  pref2: 'P'   },
+  { name: 'Lucas Baker',         pref1: 'SS',  pref2: '2B'  },
+  { name: 'Jason Garms',         pref1: '3B',  pref2: 'LF'  },
+  { name: 'Chase Wiggs',         pref1: '3B',  pref2: '2B'  },
+  { name: 'Gabe Kahn',           pref1: 'SS',  pref2: 'LF'  },
+  { name: 'Cameron Paddock',     pref1: 'LF',  pref2: 'RF'  },
+  { name: 'Anthony Tubbs',       pref1: '3B',  pref2: '2B'  },
+  { name: 'Ryan Cretton',        pref1: 'LF',  pref2: '3B'  },
+];
+
+let roster = JSON.parse(JSON.stringify(INITIAL_ROSTER));
+let assignments = {};
+
+// ── ADD PLAYER ───────────────────────────────────────────
+function addPlayer() {
+  const nameInput = document.getElementById('playerInput');
+  const p1Input   = document.getElementById('pref1Input');
+  const p2Input   = document.getElementById('pref2Input');
+  const name = nameInput.value.trim();
+  if (!name) return;
+  if (roster.find(p => p.name.toLowerCase() === name.toLowerCase())) {
+    alert('Player already on roster.'); return;
+  }
+  roster.push({ name, pref1: p1Input.value.trim(), pref2: p2Input.value.trim() });
+  nameInput.value = ''; p1Input.value = ''; p2Input.value = '';
+  renderRoster(); rebuildSelects(); renderBench();
+}
+document.getElementById('playerInput').addEventListener('keydown', e => { if (e.key === 'Enter') addPlayer(); });
+
+// ── REMOVE PLAYER ────────────────────────────────────────
+function removePlayer(name) {
+  roster = roster.filter(p => p.name !== name);
+  for (const pos in assignments) { if (assignments[pos] === name) delete assignments[pos]; }
+  renderRoster(); rebuildSelects(); renderBench();
+}
+
+// ── RENDER ROSTER TABLE ──────────────────────────────────
+function renderRoster() {
+  const tbody = document.getElementById('rosterBody');
+  tbody.innerHTML = '';
+  roster.forEach(p => {
+    const assignedPos = Object.entries(assignments).find(([,n]) => n === p.name);
+    const assignedLabel = assignedPos ? POS_LABELS[assignedPos[0]] : null;
+
+    const tr = document.createElement('tr');
+
+    const p1label = p.pref1 ? (POS_LABELS[p.pref1] || p.pref1) : '';
+    const p2label = p.pref2 ? (POS_LABELS[p.pref2] || p.pref2) : '';
+
+    tr.innerHTML = `
+      <td class="name-cell">
+        ${p.name}
+        ${assignedLabel ? `<span style="font-size:0.72rem;color:var(--teal);margin-left:6px">(${assignedLabel})</span>` : ''}
+      </td>
+      <td>${p1label ? `<span class="pref-badge p1">${p1label}</span>` : '<span class="pref-badge none">—</span>'}</td>
+      <td>${p2label ? `<span class="pref-badge p2">${p2label}</span>` : '<span class="pref-badge none">—</span>'}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="removePlayer('${p.name.replace(/'/g,"\\'")}')">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── REBUILD FIELD SELECTS ────────────────────────────────
+function rebuildSelects() {
+  POSITIONS.forEach(pos => {
+    const sel = document.getElementById(`pos-${pos}`);
+    const current = assignments[pos] || '';
+
+    // Build options: unassigned players + currently assigned player for this pos
+    const available = roster.filter(p => {
+      const assignedElsewhere = Object.entries(assignments).some(([aPos, aName]) => aName === p.name && aPos !== pos);
+      return !assignedElsewhere || p.name === current;
+    });
+
+    // Sort: prefer players whose pref1 or pref2 matches this position first
+    available.sort((a, b) => {
+      const aScore = (a.pref1 === pos ? 0 : a.pref2 === pos ? 1 : 2);
+      const bScore = (b.pref1 === pos ? 0 : b.pref2 === pos ? 1 : 2);
+      return aScore - bScore || a.name.localeCompare(b.name);
+    });
+
+    sel.innerHTML = '<option value="">— select —</option>';
+
+    let lastGroup = -1;
+    available.forEach(p => {
+      const score = (p.pref1 === pos ? 0 : p.pref2 === pos ? 1 : 2);
+      // Add option group dividers via disabled options
+      if (score !== lastGroup && available.some(x => (x.pref1 === pos ? 0 : x.pref2 === pos ? 1 : 2) !== score || x === p)) {
+        lastGroup = score;
+      }
+      const opt = document.createElement('option');
+      opt.value = p.name;
+      const star = p.pref1 === pos ? ' ★' : p.pref2 === pos ? ' ☆' : '';
+      opt.textContent = p.name + star;
+      sel.appendChild(opt);
+    });
+
+    sel.value = current;
+    sel.classList.toggle('filled', !!current);
+  });
+  renderRoster(); // refresh assigned label in roster
+}
+
+function onAssign(pos, sel) {
+  const name = sel.value;
+  assignments[pos] = name || undefined;
+  if (!name) delete assignments[pos];
+  rebuildSelects();
+  renderBench();
+}
+
+// ── BENCH ─────────────────────────────────────────────────
+function renderBench() {
+  const assigned = new Set(Object.values(assignments));
+  const bench = roster.filter(p => !assigned.has(p.name));
+  const container = document.getElementById('benchChips');
+  container.innerHTML = '';
+  if (bench.length === 0 && roster.length > 0) {
+    container.innerHTML = '<span style="color:var(--teal);font-size:0.82rem">All players assigned ✓</span>';
+    return;
+  }
+  bench.forEach(p => {
+    const chip = document.createElement('span');
+    chip.className = 'bench-chip unassigned';
+    chip.textContent = p.name;
+    container.appendChild(chip);
+  });
+}
+
+// ── AUTO FILL ─────────────────────────────────────────────
+function autoFill() {
+  const assigned = new Set(Object.values(assignments));
+  const available = roster.filter(p => !assigned.has(p.name));
+  const open = POSITIONS.filter(pos => !assignments[pos]);
+
+  // Greedy: assign players to their preferred open positions first
+  const used = new Set();
+  // Pass 1: pref1 matches
+  open.forEach(pos => {
+    if (assignments[pos]) return;
+    const match = available.find(p => !used.has(p.name) && p.pref1 === pos);
+    if (match) { assignments[pos] = match.name; used.add(match.name); }
+  });
+  // Pass 2: pref2 matches
+  open.forEach(pos => {
+    if (assignments[pos]) return;
+    const match = available.find(p => !used.has(p.name) && p.pref2 === pos);
+    if (match) { assignments[pos] = match.name; used.add(match.name); }
+  });
+  // Pass 3: fill remaining randomly
+  const remaining = available.filter(p => !used.has(p.name)).sort(() => Math.random() - 0.5);
+  let ri = 0;
+  open.forEach(pos => {
+    if (!assignments[pos] && remaining[ri]) { assignments[pos] = remaining[ri++].name; }
+  });
+
+  rebuildSelects();
+  renderBench();
+}
+
+// ── CLEAR ─────────────────────────────────────────────────
+function clearAssignments() {
+  if (!confirm('Clear all field assignments?')) return;
+  assignments = {};
+  rebuildSelects();
+  renderBench();
+}
+
+// ── COPY TEXT ─────────────────────────────────────────────
+function generateText() {
+  const lines = ['🍆 EGGPLANT KICKBALL LINEUP 🍆', ''];
+  POSITIONS.forEach(pos => {
+    const name = assignments[pos] || '(open)';
+    lines.push(`${POS_LABELS[pos].padEnd(14)} ${name}`);
+  });
+  const assigned = new Set(Object.values(assignments));
+  const bench = roster.filter(p => !assigned.has(p.name));
+  if (bench.length) {
+    lines.push('');
+    lines.push(`Bench: ${bench.map(p => p.name).join(', ')}`);
+  }
+  const text = lines.join('\n');
+  const out = document.getElementById('copyOutput');
+  out.textContent = text;
+  out.style.display = 'block';
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.action-row .btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = orig, 1800);
+  }).catch(() => {});
+}
+
+// ── INIT ──────────────────────────────────────────────────
+renderRoster();
+rebuildSelects();
+renderBench();
+</script>
 </body>
-
 </html>
