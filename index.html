@@ -207,22 +207,6 @@
     .btn-orange:hover { background: #d35400; }
 
     /* ── ROSTER TABLE ────────────────────────────── */
-    .roster-input-row {
-      display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
-    }
-    .roster-input-row input {
-      flex: 1;
-      min-width: 120px;
-      background: var(--navy);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--white);
-      padding: 8px 12px;
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.88rem;
-    }
-    .roster-input-row input:focus { outline: none; border-color: var(--teal); }
-
     .roster-table {
       width: 100%;
       border-collapse: collapse;
@@ -488,13 +472,6 @@
   <div class="card">
     <div class="card-title">📋 Roster</div>
 
-    <div class="roster-input-row">
-      <input id="playerInput" type="text" placeholder="First Last" />
-      <input id="pref1Input" type="text" placeholder="Pref 1" style="max-width:130px" class="col-pref"/>
-      <input id="pref2Input" type="text" placeholder="Pref 2" style="max-width:130px" class="col-pref"/>
-      <button class="btn" onclick="addPlayer()">Add</button>
-    </div>
-
     <table class="roster-table">
       <thead>
         <tr>
@@ -502,7 +479,6 @@
           <th>Player</th>
           <th class="col-pref">1st Choice</th>
           <th class="col-pref">2nd Choice</th>
-          <th style="width:32px"></th>
         </tr>
       </thead>
       <tbody id="rosterBody"></tbody>
@@ -540,8 +516,6 @@ const INITIAL_ROSTER = [
   { name: 'David Goddard',       pref1: 'OF',  pref2: ''    },
   { name: 'James Brandon',       pref1: 'OF',  pref2: ''    },
   { name: 'Joshua Redman',       pref1: '1B',  pref2: 'C'   },
-  { name: "Stephen O'Neall",     pref1: 'OF',  pref2: ''    },
-  { name: 'Brett Opitz',         pref1: 'OF',  pref2: ''    },
   { name: 'Michael Hendricks',   pref1: 'P',   pref2: 'SS'  },
   { name: 'Michael Blake',       pref1: 'OF',  pref2: ''    },
   { name: 'Tim Duckworth',       pref1: 'OF',  pref2: ''    },
@@ -552,25 +526,28 @@ const INITIAL_ROSTER = [
   { name: 'JJ Dearmore',         pref1: '2B',  pref2: 'P'   },
   { name: 'Lucas Baker',         pref1: 'SS',  pref2: '2B'  },
   { name: 'Jason Garms',         pref1: '3B',  pref2: 'OF'  },
-  { name: 'Chase Wiggs',         pref1: '3B',  pref2: '2B'  },
-  { name: 'Gabe Kahn',           pref1: 'SS',  pref2: 'OF'  },
   { name: 'Cameron Paddock',     pref1: 'OF',  pref2: ''    },
   { name: 'Anthony Tubbs',       pref1: '3B',  pref2: '2B'  },
   { name: 'Ryan Cretton',        pref1: 'OF',  pref2: '3B'  },
-  { name: 'Brett Josephson',     pref1: '',    pref2: ''    },
-  { name: 'Harrison Mackler',    pref1: '',    pref2: ''    },
+  { name: 'Brett Josephson',     pref1: '3B',  pref2: 'SS'  },
   { name: 'Jake Biarnesen',      pref1: '',    pref2: ''    },
   { name: 'Jake Jorgensen',      pref1: '',    pref2: ''    },
+  { name: 'Matt McKeown',        pref1: 'SS',  pref2: '2B'  },
+  { name: 'Paul France',         pref1: '',    pref2: ''    },
+  { name: 'Zach Greer',          pref1: '',    pref2: ''    },
+  { name: 'Payton Stone',        pref1: '',    pref2: 'P'   },
+  { name: 'Albert Ramos',        pref1: '',    pref2: ''    },
+  { name: 'Pato Smith',          pref1: '',    pref2: ''    },
 ];
 
 let roster      = JSON.parse(JSON.stringify(INITIAL_ROSTER));
-// present: Set of names checked in
-let present     = new Set();
+// present: Set of names — default ALL players to present
+let present     = new Set(INITIAL_ROSTER.map(p => p.name));
 // assignments: { 1: {pos: name}, 2: {pos: name} }
 let assignments = { 1: {}, 2: {} };
 let currentWave = 1;
-// kickOrder: ordered array of names (present players)
-let kickOrder   = [];
+// kickOrder: ordered array of names — default to full roster order
+let kickOrder   = INITIAL_ROSTER.map(p => p.name);
 
 // ── WAVE ─────────────────────────────────────────────────
 function setWave(w) {
@@ -600,22 +577,6 @@ function togglePresent(name, checked) {
   renderBench();
   renderKickOrder();
 }
-
-// ── ADD PLAYER ────────────────────────────────────────────
-function addPlayer() {
-  const nameEl = document.getElementById('playerInput');
-  const p1El   = document.getElementById('pref1Input');
-  const p2El   = document.getElementById('pref2Input');
-  const name   = nameEl.value.trim();
-  if (!name) return;
-  if (roster.find(p => p.name.toLowerCase() === name.toLowerCase())) {
-    alert('Player already on roster.'); return;
-  }
-  roster.push({ name, pref1: p1El.value.trim(), pref2: p2El.value.trim() });
-  nameEl.value = ''; p1El.value = ''; p2El.value = '';
-  renderRoster(); rebuildSelects(); renderBench();
-}
-document.getElementById('playerInput').addEventListener('keydown', e => { if (e.key === 'Enter') addPlayer(); });
 
 // ── REMOVE PLAYER ─────────────────────────────────────────
 function removePlayer(name) {
@@ -655,7 +616,6 @@ function renderRoster() {
       </td>
       <td class="col-pref">${p1label ? `<span class="pref-badge p1">${p1label}</span>` : '—'}</td>
       <td class="col-pref">${p2label ? `<span class="pref-badge p2">${p2label}</span>` : '—'}</td>
-      <td><button class="btn btn-ghost btn-sm" onclick="removePlayer('${safeName}')">✕</button></td>
     `;
     tbody.appendChild(tr);
   });
@@ -896,256 +856,297 @@ function renderKickOrder() {
 
 // ── EXPORT ────────────────────────────────────────────────
 function exportLineup() {
-  const wave = currentWave;
-  const W = 1100, FH = 720, KW = 320, PAD = 28, TOTAL_H = FH + 200;
-  const canvas = document.createElement('canvas');
-  canvas.width  = W + KW;
-  canvas.height = TOTAL_H;
-  const cx = canvas.getContext('2d');
 
-  // ── helpers ─────────────────────────────────────────────
-  const hex2rgb = h => {
-    const r = parseInt(h.slice(1,3),16), g = parseInt(h.slice(3,5),16), b = parseInt(h.slice(5,7),16);
-    return [r,g,b];
-  };
+  // ── shared drawing constants ─────────────────────────────
   const C = {
-    dark:   '#0f1c28', navy:  '#1a2a3a', card:  '#213447',
-    border: '#2d4a63', teal:  '#18bc9c', teallt:'#2ee8bf',
-    muted:  '#7ea8c0', white: '#ffffff', red:   '#e74c3c',
-    grass:  '#1e3d22', grassin:'#3a8545', dirt: '#c8a96a',
-    basepath:'#e8c870', wave2: '#e67e22',
-    waveCol: wave === 1 ? '#18bc9c' : '#e67e22',
+    dark:    '#0f1c28', navy:   '#1a2a3a', card:   '#2a3f55',
+    border:  '#2d4a63', teal:   '#18bc9c', teallt: '#2ee8bf',
+    muted:   '#7ea8c0', white:  '#ffffff', red:    '#e74c3c',
+    grass:   '#1e3d22', grassin:'#3a8545', dirt:   '#c8a96a',
+    basepath:'#e8c870', wave2:  '#e67e22',
+    pillFill:   '#1e3347',   // lighter background for pills
+    pillStroke: '#18bc9c',
+    pillText:   '#ffffff',
+    pillLabel:  'rgba(255,255,255,0.6)',
   };
 
-  // ── background ───────────────────────────────────────────
-  cx.fillStyle = C.dark;
-  cx.fillRect(0, 0, W + KW, TOTAL_H);
+  // ── helper: draw one field canvas ───────────────────────
+  function drawFieldCanvas(waveNum) {
+    const W = 1080, H = 1080; // square for easy WhatsApp sharing
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const cx = c.getContext('2d');
 
-  // vertical divider
-  cx.strokeStyle = C.border;
-  cx.lineWidth = 1;
-  cx.beginPath(); cx.moveTo(W, 0); cx.lineTo(W, TOTAL_H); cx.stroke();
+    const waveColor = waveNum === 1 ? C.teal : C.wave2;
 
-  // ── HEADER BAR ───────────────────────────────────────────
-  const HEADER_H = 54;
-  cx.fillStyle = C.navy;
-  cx.fillRect(0, 0, W + KW, HEADER_H);
-  cx.strokeStyle = C.teal;
-  cx.lineWidth = 3;
-  cx.beginPath(); cx.moveTo(0, HEADER_H); cx.lineTo(W + KW, HEADER_H); cx.stroke();
+    // ── background ─────────────────────────────────────────
+    cx.fillStyle = '#162330';
+    cx.fillRect(0, 0, W, H);
 
-  // logo text
-  cx.font = 'bold 28px sans-serif';
-  cx.fillStyle = C.teal;
-  cx.fillText('🍆 EGGPLANT', PAD, 36);
+    // ── header ─────────────────────────────────────────────
+    const HDR = 90;
+    cx.fillStyle = C.navy;
+    cx.fillRect(0, 0, W, HDR);
+    cx.fillStyle = waveColor;
+    cx.fillRect(0, HDR - 4, W, 4);
 
-  // wave badge
-  const badgeX = 240, badgeY = 14, badgeW = 90, badgeH = 26, badgeR = 13;
-  cx.fillStyle = C.waveCol;
-  cx.beginPath();
-  cx.roundRect(badgeX, badgeY, badgeW, badgeH, badgeR);
-  cx.fill();
-  cx.font = 'bold 13px sans-serif';
-  cx.fillStyle = wave === 1 ? C.dark : C.white;
-  cx.textAlign = 'center';
-  cx.fillText(`WAVE ${wave}`, badgeX + badgeW/2, badgeY + 17);
-  cx.textAlign = 'left';
+    // logo
+    cx.font = 'bold 42px sans-serif';
+    cx.fillStyle = waveColor;
+    cx.textAlign = 'left';
+    cx.fillText('🍆  EGGPLANT', 28, 60);
 
-  // ── FIELD AREA ───────────────────────────────────────────
-  const FY = HEADER_H + PAD;
-  // The field is drawn in a coordinate system matching the SVG viewBox 700×560
-  // scaled to fit W × FH
-  const SVG_W = 700, SVG_H = 560;
-  const scaleX = W / SVG_W, scaleY = (FH - PAD*2) / SVG_H;
-  const sc = Math.min(scaleX, scaleY);
-  const offX = (W - SVG_W * sc) / 2;
-  const offY = FY + (FH - SVG_H * sc) / 2 - PAD;
+    // wave badge
+    const bW = 140, bH = 40, bX = W - bW - 28, bY = 25;
+    cx.fillStyle = waveColor;
+    cx.beginPath(); cx.roundRect(bX, bY, bW, bH, 20); cx.fill();
+    cx.font = 'bold 20px sans-serif';
+    cx.fillStyle = waveNum === 1 ? C.dark : C.white;
+    cx.textAlign = 'center';
+    cx.fillText(`WAVE ${waveNum}`, bX + bW / 2, bY + 27);
+    cx.textAlign = 'left';
 
-  const fx = x => offX + x * sc;
-  const fy = y => offY + y * sc;
+    // ── field area ─────────────────────────────────────────
+    const FX = 0, FY = HDR, FW = W, FH = H - HDR - 50;
+    cx.fillStyle = C.grass;
+    cx.fillRect(FX, FY, FW, FH);
 
-  // dark green BG
-  cx.fillStyle = C.grass;
-  cx.fillRect(0, HEADER_H, W, FH + PAD);
+    // scale SVG viewBox 700×560 → field area
+    const SVG_W = 700, SVG_H = 560;
+    const sc = Math.min(FW / SVG_W, FH / SVG_H) * 0.92;
+    const offX = FX + (FW - SVG_W * sc) / 2;
+    const offY = FY + (FH - SVG_H * sc) / 2 + 20;
+    const fx = x => offX + x * sc;
+    const fy = y => offY + y * sc;
 
-  // dirt diamond
-  cx.fillStyle = C.dirt;
-  cx.beginPath();
-  cx.moveTo(fx(350), fy(530));
-  cx.lineTo(fx(160), fy(360));
-  cx.lineTo(fx(350), fy(190));
-  cx.lineTo(fx(540), fy(360));
-  cx.closePath();
-  cx.fill();
-
-  // infield grass
-  cx.fillStyle = C.grassin;
-  cx.beginPath();
-  cx.ellipse(fx(350), fy(360), 120*sc, 120*sc, 0, 0, Math.PI*2);
-  cx.fill();
-
-  // foul lines
-  cx.strokeStyle = 'rgba(255,255,255,0.35)';
-  cx.lineWidth = 1.5;
-  cx.beginPath(); cx.moveTo(fx(350), fy(530)); cx.lineTo(fx(20),  fy(20));  cx.stroke();
-  cx.beginPath(); cx.moveTo(fx(350), fy(530)); cx.lineTo(fx(680), fy(20));  cx.stroke();
-
-  // base path dashes
-  cx.strokeStyle = C.basepath;
-  cx.lineWidth = 2;
-  cx.setLineDash([6*sc, 4*sc]);
-  cx.beginPath();
-  cx.moveTo(fx(350), fy(530));
-  cx.lineTo(fx(160), fy(360));
-  cx.lineTo(fx(350), fy(190));
-  cx.lineTo(fx(540), fy(360));
-  cx.closePath();
-  cx.stroke();
-  cx.setLineDash([]);
-
-  // bases
-  const drawBase = (x, y, r=9) => {
-    cx.save();
-    cx.translate(fx(x), fy(y));
-    cx.rotate(Math.PI/4);
-    cx.fillStyle = '#ffffff';
-    cx.fillRect(-r*sc, -r*sc, r*2*sc, r*2*sc);
-    cx.restore();
-  };
-  drawBase(350, 530, 7); // home
-  drawBase(540, 360);    // 1st
-  drawBase(350, 190);    // 2nd
-  drawBase(160, 360);    // 3rd
-
-  // pitcher mound
-  cx.fillStyle = C.dirt;
-  cx.beginPath();
-  cx.ellipse(fx(350), fy(365), 22*sc, 22*sc, 0, 0, Math.PI*2);
-  cx.fill();
-  cx.strokeStyle = C.basepath;
-  cx.lineWidth = 1.5;
-  cx.stroke();
-
-  // ── POSITION LABELS ──────────────────────────────────────
-  // Each entry: [posKey, svgX%, svgY%] matching the overlay positions
-  const posCoords = [
-    ['P',  350, 430], // pitcher — slightly above mound center
-    ['C',  350, 545], // catcher — below home
-    ['1B', 493, 360], // 1st base area
-    ['2B', 350, 230], // 2nd base area
-    ['3B', 207, 360], // 3rd base area
-    ['SS', 245, 295], // shortstop
-    // outfield: map left%/top% back to SVG coords
-    ['LF',  35,  157], // left:5% top:28%  → ~35, 157
-    ['LC', 175,   78], // left:25% top:14% → ~175, 78
-    ['CF', 350,   45], // left:50% top:8%  → ~350, 45
-    ['RC', 525,   78], // left:75% top:14% → ~525, 78
-    ['RF', 665,  157], // left:95% top:28% → ~665, 157
-  ];
-
-  posCoords.forEach(([pos, svgX, svgY]) => {
-    const name = assignments[wave][pos] || '';
-    const label = POS_LABELS[pos];
-    const px = fx(svgX), py = fy(svgY);
-    const isPitcher = pos === 'P';
-
-    // pill background
-    const pillW = 130, pillH = 38, pillR = 19;
-    const pillX = px - pillW/2, pillY = py - pillH/2;
-
-    cx.fillStyle = isPitcher
-      ? (name ? 'rgba(231,76,60,0.25)' : 'rgba(10,25,40,0.82)')
-      : (name ? 'rgba(24,188,156,0.22)' : 'rgba(10,25,40,0.82)');
+    // dirt diamond
+    cx.fillStyle = C.dirt;
     cx.beginPath();
-    cx.roundRect(pillX, pillY, pillW, pillH, pillR);
+    cx.moveTo(fx(350),fy(530)); cx.lineTo(fx(160),fy(360));
+    cx.lineTo(fx(350),fy(190)); cx.lineTo(fx(540),fy(360));
+    cx.closePath(); cx.fill();
+
+    // infield grass
+    cx.fillStyle = C.grassin;
+    cx.beginPath();
+    cx.ellipse(fx(350),fy(360),120*sc,120*sc,0,0,Math.PI*2);
     cx.fill();
 
-    cx.strokeStyle = isPitcher ? C.red : (name ? C.teallt : C.border);
-    cx.lineWidth = 1.5;
+    // foul lines
+    cx.strokeStyle='rgba(255,255,255,0.3)'; cx.lineWidth=2;
+    cx.beginPath(); cx.moveTo(fx(350),fy(530)); cx.lineTo(fx(20),fy(20)); cx.stroke();
+    cx.beginPath(); cx.moveTo(fx(350),fy(530)); cx.lineTo(fx(680),fy(20)); cx.stroke();
+
+    // base paths dashed
+    cx.strokeStyle=C.basepath; cx.lineWidth=2.5; cx.setLineDash([6*sc,4*sc]);
     cx.beginPath();
-    cx.roundRect(pillX, pillY, pillW, pillH, pillR);
-    cx.stroke();
+    cx.moveTo(fx(350),fy(530)); cx.lineTo(fx(160),fy(360));
+    cx.lineTo(fx(350),fy(190)); cx.lineTo(fx(540),fy(360));
+    cx.closePath(); cx.stroke(); cx.setLineDash([]);
 
-    // position label above pill
-    cx.font = 'bold 10px sans-serif';
-    cx.fillStyle = 'rgba(255,255,255,0.75)';
-    cx.textAlign = 'center';
-    cx.fillText(label.toUpperCase(), px, pillY - 3);
+    // bases
+    const base = (x,y,r=11) => {
+      cx.save(); cx.translate(fx(x),fy(y)); cx.rotate(Math.PI/4);
+      cx.fillStyle='#fff'; cx.fillRect(-r*sc,-r*sc,r*2*sc,r*2*sc); cx.restore();
+    };
+    base(350,530,8); base(540,360); base(350,190); base(160,360);
 
-    // player name inside pill
-    cx.font = name ? 'bold 13px sans-serif' : '11px sans-serif';
-    cx.fillStyle = name ? C.white : C.muted;
-    // truncate long names
-    let displayName = name || '— open —';
-    if (cx.measureText(displayName).width > pillW - 16) {
-      const parts = displayName.split(' ');
-      displayName = parts.length > 1 ? parts[0] + ' ' + parts[parts.length-1][0] + '.' : displayName;
-    }
-    cx.fillText(displayName, px, pillY + pillH/2 + 5);
-    cx.textAlign = 'left';
-  });
+    // pitcher mound
+    cx.fillStyle=C.dirt; cx.beginPath();
+    cx.ellipse(fx(350),fy(365),24*sc,24*sc,0,0,Math.PI*2); cx.fill();
+    cx.strokeStyle=C.basepath; cx.lineWidth=2; cx.stroke();
 
-  // ── KICKING ORDER PANEL (right column) ───────────────────
-  const KX = W + PAD;
-  cx.font = 'bold 14px sans-serif';
-  cx.fillStyle = C.teal;
-  cx.fillText('👟 KICKING ORDER', KX, HEADER_H + 36);
+    // ── position pills ─────────────────────────────────────
+    const posCoords = [
+      ['P',  350, 440], ['C',  350, 548],
+      ['1B', 493, 360], ['2B', 350, 228],
+      ['3B', 207, 360], ['SS', 242, 292],
+      ['LF',  35, 155], ['LC', 175,  75],
+      ['CF', 350,  42], ['RC', 525,  75],
+      ['RF', 665, 155],
+    ];
 
-  cx.strokeStyle = C.border;
-  cx.lineWidth = 1;
-  cx.beginPath(); cx.moveTo(W + PAD, HEADER_H + 44); cx.lineTo(W + KW - PAD, HEADER_H + 44); cx.stroke();
+    const PILL_W = 170, PILL_H = 52, PILL_R = 26;
 
-  const listY0 = HEADER_H + 58;
-  const rowH = 36;
-  if (kickOrder.length === 0) {
-    cx.font = 'italic 12px sans-serif';
-    cx.fillStyle = C.muted;
-    cx.fillText('No players checked in.', KX, listY0 + 16);
-  } else {
-    kickOrder.forEach((name, i) => {
-      const ry = listY0 + i * rowH;
-      if (ry + rowH > TOTAL_H - 10) return; // clip overflow
+    posCoords.forEach(([pos, svgX, svgY]) => {
+      const name  = assignments[waveNum][pos] || '';
+      const label = POS_LABELS[pos];
+      const px = fx(svgX), py = fy(svgY);
+      const isPitcher = pos === 'P';
+      const pX = px - PILL_W/2, pY = py - PILL_H/2;
 
-      // row bg
-      cx.fillStyle = C.navy;
-      cx.beginPath();
-      cx.roundRect(W + PAD, ry, KW - PAD*2, rowH - 4, 6);
-      cx.fill();
+      // pill shadow
+      cx.shadowColor='rgba(0,0,0,0.55)'; cx.shadowBlur=10; cx.shadowOffsetY=3;
 
-      // number
-      cx.font = 'bold 16px sans-serif';
-      cx.fillStyle = C.teal;
-      cx.textAlign = 'right';
-      cx.fillText(String(i + 1), W + PAD + 28, ry + 23);
+      // pill fill — lighter so names pop
+      cx.fillStyle = name
+        ? (isPitcher ? 'rgba(45,20,20,0.92)' : '#1e3347')
+        : 'rgba(15,28,40,0.85)';
+      cx.beginPath(); cx.roundRect(pX, pY, PILL_W, PILL_H, PILL_R); cx.fill();
 
-      // name
-      cx.font = '600 13px sans-serif';
-      cx.fillStyle = C.white;
-      cx.textAlign = 'left';
-      cx.fillText(name, W + PAD + 36, ry + 23);
+      cx.shadowColor='transparent'; cx.shadowBlur=0; cx.shadowOffsetY=0;
+
+      // pill border
+      cx.strokeStyle = name
+        ? (isPitcher ? '#ff6b5b' : (waveNum===1 ? C.teallt : C.wave2))
+        : C.border;
+      cx.lineWidth = name ? 2.5 : 1.5;
+      cx.beginPath(); cx.roundRect(pX, pY, PILL_W, PILL_H, PILL_R); cx.stroke();
+
+      // position label (small, above center)
+      cx.font = 'bold 14px sans-serif';
+      cx.fillStyle = isPitcher ? '#ff9985' : (waveNum===1 ? C.teal : C.wave2);
+      cx.textAlign = 'center';
+      cx.fillText(label.toUpperCase(), px, pY + 18);
+
+      // player name (large, bold, white)
+      cx.font = name ? 'bold 18px sans-serif' : '14px sans-serif';
+      cx.fillStyle = name ? C.white : 'rgba(126,168,192,0.6)';
+      let displayName = name || '— open —';
+      // truncate if needed
+      while (cx.measureText(displayName).width > PILL_W - 20 && displayName.includes(' ')) {
+        const parts = displayName.split(' ');
+        displayName = parts[0] + ' ' + parts[parts.length-1][0] + '.';
+      }
+      cx.fillText(displayName, px, pY + PILL_H - 12);
       cx.textAlign = 'left';
     });
+
+    // ── footer ─────────────────────────────────────────────
+    const now = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    cx.font = '22px sans-serif';
+    cx.fillStyle = 'rgba(126,168,192,0.45)';
+    cx.textAlign = 'center';
+    cx.fillText(`Eggplant  ·  Wave ${waveNum}  ·  ${now}`, W/2, H - 14);
+    cx.textAlign = 'left';
+
+    return c;
   }
 
-  // ── FOOTER ───────────────────────────────────────────────
-  cx.fillStyle = C.muted;
-  cx.font = '11px sans-serif';
-  cx.fillStyle = 'rgba(126,168,192,0.5)';
-  const now = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
-  cx.fillText(`Eggplant Kickball  ·  Wave ${wave}  ·  ${now}`, PAD, TOTAL_H - 10);
+  // ── helper: draw kicking order canvas ───────────────────
+  function drawKickCanvas() {
+    const COLS = 2;
+    const PER_COL = Math.ceil(kickOrder.length / COLS);
+    const ROW_H = 70, PAD = 36, COL_W = 480;
+    const W = PAD * 3 + COL_W * COLS;
+    const H = 120 + PER_COL * ROW_H + PAD;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const cx = c.getContext('2d');
 
-  // ── OPEN AS PNG ──────────────────────────────────────────
-  canvas.toBlob(blob => {
-    const url = URL.createObjectURL(blob);
-    const win = window.open(url, '_blank');
-    // also trigger download as fallback if popup blocked
-    if (!win) {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `eggplant-lineup-wave${wave}.png`;
-      a.click();
+    // background
+    cx.fillStyle = '#162330';
+    cx.fillRect(0, 0, W, H);
+
+    // header
+    const HDR = 90;
+    cx.fillStyle = C.navy;
+    cx.fillRect(0, 0, W, HDR);
+    cx.fillStyle = C.teal;
+    cx.fillRect(0, HDR - 4, W, 4);
+
+    cx.font = 'bold 42px sans-serif';
+    cx.fillStyle = C.teal;
+    cx.textAlign = 'left';
+    cx.fillText('🍆  KICKING ORDER', PAD, 60);
+
+    const now = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    cx.font = '22px sans-serif';
+    cx.fillStyle = 'rgba(126,168,192,0.5)';
+    cx.textAlign = 'right';
+    cx.fillText(now, W - PAD, 60);
+    cx.textAlign = 'left';
+
+    if (kickOrder.length === 0) {
+      cx.font = 'italic 24px sans-serif';
+      cx.fillStyle = C.muted;
+      cx.fillText('No players checked in.', PAD, HDR + 60);
+      return c;
     }
-  }, 'image/png');
+
+    kickOrder.forEach((name, i) => {
+      const col = Math.floor(i / PER_COL);
+      const row = i % PER_COL;
+      const rx = PAD + col * (COL_W + PAD);
+      const ry = HDR + PAD/2 + row * ROW_H;
+
+      // row background
+      cx.fillStyle = '#1e3347';
+      cx.shadowColor='rgba(0,0,0,0.4)'; cx.shadowBlur=6; cx.shadowOffsetY=2;
+      cx.beginPath(); cx.roundRect(rx, ry, COL_W, ROW_H - 8, 10); cx.fill();
+      cx.shadowColor='transparent'; cx.shadowBlur=0; cx.shadowOffsetY=0;
+
+      // subtle border
+      cx.strokeStyle='rgba(45,74,99,0.8)'; cx.lineWidth=1;
+      cx.beginPath(); cx.roundRect(rx, ry, COL_W, ROW_H - 8, 10); cx.stroke();
+
+      // number circle
+      const numR = 20, numX = rx + 34, numY = ry + (ROW_H-8)/2;
+      cx.fillStyle = C.teal;
+      cx.beginPath(); cx.arc(numX, numY, numR, 0, Math.PI*2); cx.fill();
+      cx.font = 'bold 20px sans-serif';
+      cx.fillStyle = C.dark;
+      cx.textAlign = 'center';
+      cx.fillText(String(i+1), numX, numY + 7);
+
+      // name
+      cx.font = 'bold 24px sans-serif';
+      cx.fillStyle = C.white;
+      cx.textAlign = 'left';
+      cx.fillText(name, rx + 68, numY + 9);
+    });
+
+    cx.textAlign = 'left';
+    return c;
+  }
+
+  // ── build both field images + kick order ────────────────
+  const c1   = drawFieldCanvas(1);
+  const c2   = drawFieldCanvas(2);
+  const cKick = drawKickCanvas();
+
+  // ── open new tab with all 3 images ──────────────────────
+  const toDataURL = canvas => canvas.toDataURL('image/png');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+  <title>Eggplant Lineup Export</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#0f1c28;font-family:sans-serif;padding:16px;display:flex;flex-direction:column;gap:20px;align-items:center}
+    h2{color:#18bc9c;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:4px}
+    .img-wrap{width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:6px}
+    img{width:100%;border-radius:12px;display:block;-webkit-touch-callout:default}
+    .hint{color:rgba(126,168,192,0.6);font-size:0.72rem;text-align:center;margin-top:2px}
+    .back{display:block;margin:8px auto 0;background:#18bc9c;color:#0f1c28;font-weight:700;font-size:0.9rem;border:none;border-radius:8px;padding:12px 28px;cursor:pointer;text-decoration:none;text-align:center;width:fit-content}
+  </style>
+</head>
+<body>
+  <div class="img-wrap">
+    <h2>⚾ Wave 1 — Field Lineup</h2>
+    <img src="${toDataURL(c1)}" alt="Wave 1 lineup"/>
+    <p class="hint">Hold image → Copy → Paste in WhatsApp</p>
+  </div>
+  <div class="img-wrap">
+    <h2>🔶 Wave 2 — Field Lineup</h2>
+    <img src="${toDataURL(c2)}" alt="Wave 2 lineup"/>
+    <p class="hint">Hold image → Copy → Paste in WhatsApp</p>
+  </div>
+  <div class="img-wrap">
+    <h2>👟 Kicking Order</h2>
+    <img src="${toDataURL(cKick)}" alt="Kicking order"/>
+    <p class="hint">Hold image → Copy → Paste in WhatsApp</p>
+  </div>
+  <a class="back" onclick="window.close()">← Back to Lineup</a>
+</body>
+</html>`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const url  = URL.createObjectURL(blob);
+  window.open(url, '_blank');
 }
 
 // ── INIT ──────────────────────────────────────────────────
