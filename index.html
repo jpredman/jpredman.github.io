@@ -872,7 +872,7 @@ function exportLineup() {
 
   // ── helper: draw one field canvas ───────────────────────
   function drawFieldCanvas(waveNum) {
-    const W = 1080, H = 1080; // square for easy WhatsApp sharing
+    const W = 1080, H = 1400; // taller canvas gives pills room to breathe
     const c = document.createElement('canvas');
     c.width = W; c.height = H;
     const cx = c.getContext('2d');
@@ -966,7 +966,7 @@ function exportLineup() {
       ['RF', 665, 155],
     ];
 
-    const PILL_W = 200, PILL_H = 72, PILL_R = 36;
+    const PILL_W = 260, PILL_H = 100, PILL_R = 50;
 
     posCoords.forEach(([pos, svgX, svgY]) => {
       const name  = assignments[waveNum][pos] || '';
@@ -994,13 +994,13 @@ function exportLineup() {
       cx.beginPath(); cx.roundRect(pX, pY, PILL_W, PILL_H, PILL_R); cx.stroke();
 
       // position label (small, above center)
-      cx.font = 'bold 17px sans-serif';
+      cx.font = 'bold 22px sans-serif';
       cx.fillStyle = isPitcher ? '#ff9985' : (waveNum===1 ? C.teal : C.wave2);
       cx.textAlign = 'center';
       cx.fillText(label.toUpperCase(), px, pY + 18);
 
       // player name (large, bold, white)
-      cx.font = name ? 'bold 36px sans-serif' : '18px sans-serif';
+      cx.font = name ? 'bold 52px sans-serif' : '24px sans-serif';
       cx.fillStyle = name ? C.white : 'rgba(126,168,192,0.6)';
       let displayName = name || '— open —';
       // truncate if needed
@@ -1027,7 +1027,7 @@ function exportLineup() {
   function drawKickCanvas() {
     const COLS = 2;
     const PER_COL = Math.ceil(kickOrder.length / COLS);
-    const ROW_H = 88, PAD = 36, COL_W = 480;
+    const ROW_H = 110, PAD = 36, COL_W = 480;
     const W = PAD * 3 + COL_W * COLS;
     const H = 120 + PER_COL * ROW_H + PAD;
     const c = document.createElement('canvas');
@@ -1081,19 +1081,19 @@ function exportLineup() {
       cx.beginPath(); cx.roundRect(rx, ry, COL_W, ROW_H - 8, 10); cx.stroke();
 
       // number circle
-      const numR = 26, numX = rx + 40, numY = ry + (ROW_H-8)/2;
+      const numR = 34, numX = rx + 48, numY = ry + (ROW_H-8)/2;
       cx.fillStyle = C.teal;
       cx.beginPath(); cx.arc(numX, numY, numR, 0, Math.PI*2); cx.fill();
-      cx.font = 'bold 26px sans-serif';
+      cx.font = 'bold 34px sans-serif';
       cx.fillStyle = C.dark;
       cx.textAlign = 'center';
-      cx.fillText(String(i+1), numX, numY + 9);
+      cx.fillText(String(i+1), numX, numY + 12);
 
       // name
-      cx.font = 'bold 40px sans-serif';
+      cx.font = 'bold 56px sans-serif';
       cx.fillStyle = C.white;
       cx.textAlign = 'left';
-      cx.fillText(name, rx + 80, numY + 14);
+      cx.fillText(name, rx + 96, numY + 20);
     });
 
     cx.textAlign = 'left';
